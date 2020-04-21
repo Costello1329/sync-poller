@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "es2015", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,7 +13,23 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
+    "sourceMap": true,
     "jsx": "react"
+  },
+  "rules": {
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "arrow-parameter",
+      "property-declaration",
+      "variable-declaration",
+      "variable-declaration-ignore-function",
+      "member-variable-declaration",
+      "object-destructuring",
+      "array-destructuring"
+    ]
   },
   "include": ["../src"]
 }

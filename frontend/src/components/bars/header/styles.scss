@@ -1,0 +1,47 @@
+@import "../../../static/colorScheme.scss";
+@import "../../../utils/clearfix.scss";
+
+
+.headerBar {
+  @include clearfix;
+
+  font-family: "PT Sans";
+  width: 100%;
+  background-color: $whiteHalfDark;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid $whiteExtraDark;
+  box-sizing: border-box;
+  height: 80px;
+  position: relative;
+
+  > .headerTitle {
+    float: left;
+    margin-left: 32px;
+    height: 100%;
+    text-align: center;
+    display: table;
+
+    > h1 {
+      margin: 0;
+      vertical-align: middle;
+      font-weight: normal;
+      display: table-cell;
+    }
+  }
+  
+  > .headerLogout {
+    float: right;
+    position: absolute;
+    transform: translate(0, -50%);
+    top: 50%;
+    margin: 0 32px;
+    right: 0;
+
+    > h3 {
+      font-weight: normal;
+      text-align: center;
+      margin: 0 0 8px 0;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+@import "../../../static/colorScheme.scss";
+
+
+.commonInput {
+  font-family: 'PT Sans';
+  margin-bottom: 4px;
+  width: 100%;
+  max-width: 640px;
+
+  > .commonInputLabel {
+    margin-left: 8px;
+    color: $blackLight;
+  }
+
+  > .commonInputErrorLabel {
+    float: right;
+    margin-right: 2px;
+    color: $redLight;
+    font-size: 14px;
+  }
+
+  > label {
+    display: inline-block;
+    width: 100%;
+
+    > input {
+      // Here we need to reduce width by 6px because of standart user-agent
+      width: calc(100% - 6px);
+      display: block;
+      box-sizing: border-box;
+      margin: 4px auto;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid $gray;
+      padding-left: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.1s;
+      transition: background-color 0.1s;
+
+      @media screen and (max-width: 700px) {
+        height: 40px;
+      }
+
+      &.commonInputHasError {
+        border: 1px solid $redLight;
+        background-color: $redishWhite;
+
+        &:focus {
+          border: 1px solid $redLight;
+        }
+      }
+
+      &:focus {
+        border: 1px solid $grayLight;
+      }
+    }
+  }
+}

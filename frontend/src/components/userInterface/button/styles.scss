@@ -1,0 +1,114 @@
+@import "../../../static/colorScheme.scss";
+
+
+.commonButton {
+  cursor: default;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0px;
+  display: block;
+  outline: none;
+  border: none;
+  transition: color 0.1s;
+  font-family: 'PT Sans';
+
+  &.commonButtonOrange {
+    background-color: $orange;
+    color: $blackLight;
+
+    &.commonButtonSmall {
+      width: 160px;
+      height: 24px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    &.commonButtonMedium {
+      width: 240px;
+      height: 32px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    &.commonButtonBig {
+      width: 320px;
+      height: 40px;
+      border-radius: 4px;
+      font-size: 16px;
+
+      @media screen and (max-width: 700px) {
+        width: 240px;
+      }
+    }
+
+    &:hover {
+      color: $white;
+      cursor: pointer;
+    }
+
+    &:active {
+      background-color: $orangeDark;
+    }
+  }
+
+  &.commonButtonGray {
+    background-color: $grayLight;
+    color: $blackLight;
+
+    &.commonButtonSmall {
+      width: 160px;
+      height: 24px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    &.commonButtonMedium {
+      width: 240px;
+      height: 32px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    &.commonButtonBig {
+      width: 320px;
+      height: 40px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      color: $white;
+      cursor: pointer;
+    }
+
+    &:active {
+      background-color: $gray;
+    }
+  }
+
+  &.commonButtonTransparent {
+    display: block;
+    background: none;
+    color: $orange;
+
+    &.commonButtonSmall {
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    &.commonButtonMedium {
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    &.commonButtonBig {
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      color: $orangeDark;
+      cursor: pointer;
+    }
+  }
+}

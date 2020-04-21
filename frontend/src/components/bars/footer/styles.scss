@@ -1,0 +1,40 @@
+@import "../../../static/colorScheme.scss";
+@import "../../../utils/clearfix.scss";
+
+
+.footerBar {
+  @include clearfix;
+
+  font-family: "PT Sans";
+  width: 100%;
+  background-color: $whiteHalfDark;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid $whiteExtraDark;
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  box-sizing: border-box;
+
+  > div {
+    display: table;
+    height: 100%;
+
+    &.footerDevelopers {
+      float: left;
+      margin-left: 32px;
+    }
+
+    &.footerCopyright {
+      float: right;
+      margin-right: 32px;
+    }
+
+    > h5 {
+      display: table-cell;
+      vertical-align: middle;
+      font-weight: normal;
+    }
+
+  }
+}

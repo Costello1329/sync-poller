@@ -1,0 +1,34 @@
+{
+  "anyOf": [
+    { "$ref": "#/definitions/haveGotUser" },
+    { "$ref": "#/definitions/haveNotGotUser" }
+  ],
+
+  "definitions": {
+    "haveGotUser": {
+      "type": "object",
+      "properties": {
+        "gotUser": { "const": "true" },
+        "role": { "enum": ["student"] },
+        "userGuid": { "$ref": "#/definitions/Guid" }
+      },
+      "required": ["gotUser", "role", "userGuid"],
+      "additionalProperties": false
+    },
+
+    "haveNotGotUser": {
+      "type": "object",
+      "properties": {
+        "gotUser": { "const": "false" }
+      },
+      "required": ["gotUser"],
+      "additionalProperties": false
+    },
+
+    "Guid": {
+      "type": "string",
+      "pattern":
+        "[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[8-b][0-9a-f]{3}-[0-9a-f]{12}"
+    }
+  }
+}
