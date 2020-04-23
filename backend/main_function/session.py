@@ -1,5 +1,6 @@
-import redis as redis
 import uuid
+
+import redis as redis
 
 
 class InvalidData(Exception):
