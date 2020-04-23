@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 
 from main_function import http_response, session
-from main_function.json_validate import validate_request
+from main_function.request_validate import validate_request
 from manage_service.models import Tokens
 from .req_schema import req_schema
 
