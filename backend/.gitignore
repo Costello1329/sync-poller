@@ -38,6 +38,9 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+#migrations
+*/migrations/*.py
+!*/migrations/__init__.py
 
 # Unit test / coverage reports
 htmlcov/
