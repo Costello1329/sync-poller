@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'manage_service',
     "poll_service",
+    'authorization_service',
+    'logout_service',
+    'user_service'
 ]
 
 MIDDLEWARE = [
