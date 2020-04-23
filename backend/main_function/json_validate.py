@@ -1,5 +1,6 @@
 from jsonschema import validate, ValidationError
-from .http_response import get_response_error,ResponseErrorType
+
+from .http_response import get_response_error, ResponseErrorType
 
 
 def validate_request(schema):
@@ -10,11 +11,8 @@ def validate_request(schema):
                 validate(instance=request_data, schema=schema)
                 return func(self, request)
             except ValidationError:
-                try:
-                    session_guid = request.COOKIES["session"]
-                except KeyError:
-                    session_guid = None
-                return get_response_error(ResponseErrorType.Contract,400)
+                return get_response_error(ResponseErrorType.Contract, 400)
+
         return request_handler
 
     return request_dec
