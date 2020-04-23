@@ -82,7 +82,7 @@ extends EventSender<void, LogoutServiceEvent> {
     };
 
     connection
-      .send(apiEndpoints.user, HttpMethod.get, request)
+      .send(apiEndpoints.logout, HttpMethod.post, request)
       .then(
         (response: HttpQuery<LogoutResponse>): void => {
           this.sendEvent(new LogoutServiceEvent(logoutEventGuid));

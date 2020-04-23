@@ -85,7 +85,7 @@ extends EventSender<boolean, AuthorizationServiceEvent> {
     };
 
     connection
-      .send(apiEndpoints.authorize, HttpMethod.get, request)
+      .send(apiEndpoints.authorize, HttpMethod.post, request)
       .then(
         (response: HttpQuery<AuthorizationResponse>): void => {
           if (response.data.haveAuthorized === true) {

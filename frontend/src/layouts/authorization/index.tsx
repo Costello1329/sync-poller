@@ -3,6 +3,8 @@ import {
   AuthorizationForm
 } from "../../components/forms/authorizationForm";
 
+import "./styles.scss";
+
 
 
 export interface AuthorizationLayoutProps {}

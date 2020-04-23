@@ -1,5 +1,10 @@
 import React from "react";
-import {Button, ButtonType} from "../../userInterface/button";
+import {
+  Button,
+  ButtonType,
+  ButtonSize,
+  ButtonColor
+} from "../../userInterface/button";
 import {logoutService} from "../../../services/logout";
 import {localization} from "../../../static/Localization";
 
@@ -19,7 +24,12 @@ export function Header (props: HeaderProps) {
       </div>
       <div className = "headerLogout">
         <Button
-          type = {ButtonType.GrayMedium}
+          type = {
+            {
+              size: ButtonSize.Medium,
+              color: ButtonColor.Gray
+            } as ButtonType
+          }
           text = {localization.exit()}
           handler = {(): void => logoutService.logout()}
         />

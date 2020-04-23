@@ -115,7 +115,7 @@ export class UserService extends EventSender<User, UserServiceEvent> {
     };
 
     connection
-      .send(apiEndpoints.user, HttpMethod.get, request)
+      .send(apiEndpoints.user, HttpMethod.post, request)
       .then(
         (response: HttpQuery<UserResponse>): void => {
           let user: User = new UnauthorizedUser();

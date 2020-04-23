@@ -109,20 +109,22 @@ export class Form extends React.Component<FormProps, FormState> {
 
   render = (): JSX.Element => {
     return (
-      <div className = "commonForm">
+      <React.Fragment>
         <div className = "commonFormHeader">
           <h1>
             {this.props.header}
           </h1>
         </div>
-        <form
-          onSubmit = {this.handleSubmit}
-          className = "commonFormBody"
-        >
-          {this.getControls()}
-          <Button {...this.props.submitButton}/>
-        </form>
-      </div>
+        <div className = "commonForm">
+          <form
+            onSubmit = {this.handleSubmit}
+            className = "commonFormBody"
+          >
+            {this.getControls()}
+            <Button {...this.props.submitButton}/>
+          </form>
+        </div>
+      </React.Fragment>
     );
   }
 }

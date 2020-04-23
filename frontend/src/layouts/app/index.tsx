@@ -92,7 +92,7 @@ export class App extends React.Component<AppProps, AppState> {
     
     else if (this.state.user instanceof AuthorizedUser) {
       if (this.state.user instanceof StudentUser)
-        return <></>; // TODO: poll screen
+        return <PollLayout/>; // TODO: poll screen
 
       else
         return <></>; // TODO: Forbidden screen

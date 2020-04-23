@@ -7,16 +7,17 @@ import "./styles.scss";
 
 type ButtonHandler = () => void;
 
-export enum ButtonType {
-  OrangeSmall,
-  OrangeMedium,
-  OrangeBig,
-  GraySmall,
-  GrayMedium,
-  GrayBig,
-  TransparentSmall,
-  TransparentMedium,
-  TransparentBig,
+export enum ButtonColor {
+  Red, Gray, Transparent
+}
+
+export enum ButtonSize {
+  Small, Medium, Large, ExtraLarge
+}
+
+export interface ButtonType {
+  color: ButtonColor;
+  size: ButtonSize;
 }
 
 export interface ButtonProps {
@@ -34,42 +35,30 @@ extends React.Component<ButtonProps> {
   private readonly getClasses = (): string => {
     let classes: string[] = ["commonButton"];
 
-    switch (this.props.type) {
-      case ButtonType.OrangeSmall:
-        classes.push("commonButtonOrange");
+    switch (this.props.type.color) {
+      case ButtonColor.Red:
+        classes.push("commonButtonRed");
+        break;
+      case ButtonColor.Gray:
+        classes.push("commonButtonGray");
+        break;
+      case ButtonColor.Transparent:
+        classes.push("commonButtonTransparent");
+        break;
+    }
+
+    switch (this.props.type.size) {
+      case ButtonSize.Small:
         classes.push("commonButtonSmall");
         break;
-      case ButtonType.OrangeMedium:
-        classes.push("commonButtonOrange");
+      case ButtonSize.Medium:
         classes.push("commonButtonMedium");
         break;
-      case ButtonType.OrangeBig:
-        classes.push("commonButtonOrange");
-        classes.push("commonButtonBig");
+      case ButtonSize.Large:
+        classes.push("commonButtonLarge");
         break;
-      case ButtonType.GraySmall:
-        classes.push("commonButtonGray");
-        classes.push("commonButtonSmall");
-        break;
-      case ButtonType.GrayMedium:
-        classes.push("commonButtonGray");
-        classes.push("commonButtonMedium");
-        break;
-      case ButtonType.GrayBig:
-        classes.push("commonButtonGray");
-        classes.push("commonButtonBig");
-        break;
-      case ButtonType.TransparentSmall:
-        classes.push("commonButtonTransparent");
-        classes.push("commonButtonSmall");
-        break;
-      case ButtonType.TransparentMedium:
-        classes.push("commonButtonTransparent");
-        classes.push("commonButtonMedium");
-        break;
-      case ButtonType.TransparentBig:
-        classes.push("commonButtonTransparent");
-        classes.push("commonButtonBig");
+      case ButtonSize.ExtraLarge:
+        classes.push("commonButtonExtraLarge");
         break;
     }
 

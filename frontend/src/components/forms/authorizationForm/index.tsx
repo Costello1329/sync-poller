@@ -1,7 +1,7 @@
 import React from "react";
 import {FormProps, Form} from "../../userInterface/form";
 import {InputType} from "../../userInterface/input";
-import {ButtonType} from "../../userInterface/button";
+import {ButtonType, ButtonSize, ButtonColor} from "../../userInterface/button";
 import {localization} from "../../../static/Localization";
 import {getRandomGuid, Guid} from "../../../utils/Guid";
 import {authorizationService} from "../../../services/authorization";
@@ -34,7 +34,10 @@ React.Component<AuthorizationFormProps, AuthorizationFormState> {
         }
       ],
       submitButton: {
-        type: ButtonType.OrangeBig,
+        type: {
+          size: ButtonSize.Large,
+          color: ButtonColor.Transparent
+        } as ButtonType,
         text: localization.submitAuthorization()
       },
       submitHandler: (values: string[]) => {
