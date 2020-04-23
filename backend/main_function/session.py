@@ -45,7 +45,7 @@ class UsersStorage:
             return True
 
     def create_user(self, session_guid: str, user_guid: str):
-        self.users_storage.mset({str(user_guid): str(session_guid)})
+        self.users_storage.mset({str(session_guid): str(user_guid)})
 
     def delete_user(self, session_guid: str):
         if not self.check_user(session_guid):
