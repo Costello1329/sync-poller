@@ -29,6 +29,8 @@ class SessionsStorage:
         self.sessions.delete(str(token))
 
     def get_session_guid(self, token: str):
+        if not self.check_session(token):
+            return None
         session_guid = self.sessions.get(str(token)).decode("utf-8")
         return session_guid
 
@@ -53,7 +55,9 @@ class UsersStorage:
             return
         self.users_storage.delete(str(session_guid))
 
-    def get_session_guid(self, session_guid):
+    def get_user_guid(self, session_guid):
+        if not self.check_user(session_guid):
+            return None
         user_guid = self.users_storage.get(str(session_guid)).decode("utf-8")
         return user_guid
 
@@ -72,9 +76,8 @@ def create_new_session(token: str):
 def delete_session(token: str):
     sessions = SessionsStorage()
     sessions_user = UsersStorage()
-    sessions_token = sessions.check_session(token)
+    sessions_user.delete_user(sessions.get_session_guid(token))
     sessions.delete_session(token)
-    sessions_user.delete_user(sessions_token)
 
 
 def validate_session(session_guid):
