@@ -11,9 +11,9 @@ import {
   HttpMethod,
   HttpConnection
 } from "../../utils/HttpConnection";
-import {apiEndpoints, apiUrl} from "../../static/Preferences";
+import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import Cookies from 'js-cookie'
+import { storageService } from "../storage";
 
 
 
@@ -40,7 +40,8 @@ extends EventRecepient<boolean, AuthorizationServiceEvent> {
  */
 
 interface AuthorizationRequest {
-  user: string /// Guid string
+  user: string, /// Guid string
+  poll: string /// Guid string
 }
 
 interface AuthorizationResponseHaveAuthorized {
@@ -63,7 +64,9 @@ extends EventSender<boolean, AuthorizationServiceEvent> {
 
   authorize (user: Guid): void {
     const connection: HttpConnection<AuthorizationRequest, AuthorizationResponse> =
-      new HttpConnection<AuthorizationRequest, AuthorizationResponse>(apiUrl);
+      new HttpConnection<AuthorizationRequest, AuthorizationResponse>(
+        preferences.apiUrl
+      );
 
     connection.setRequestValidator(
       new JsonSchemaValidator<AuthorizationRequest>(
@@ -77,21 +80,25 @@ extends EventSender<boolean, AuthorizationServiceEvent> {
       )
     );
 
+    const poll: Guid | null = storageService.getPoll();
+
+    if (poll === null)
+      return;
+
     const request: HttpQuery<AuthorizationRequest> =  {
       headers: {},
       data: {
-        user: user.guid
+        user: user.guid,
+        poll: poll.guid
       }
     };
 
     connection
-      .send(apiEndpoints.authorize, HttpMethod.get, request)
+      .send(preferences.apiEndpoints.authorization, HttpMethod.post, request)
       .then(
         (response: HttpQuery<AuthorizationResponse>): void => {
-          if (response.data.haveAuthorized === true) {
-            /// TODO: set cookie here!
-            response.data.session;
-          }
+          if (response.data.haveAuthorized === true)
+            storageService.setSession(new Guid(response.data.session));
 
           this.sendEvent(
             new AuthorizationServiceEvent(

@@ -1,46 +1,46 @@
 @import "../../../static/colorScheme.scss";
+@import "../../../utils/clearfix.scss";
 
+
+.commonFormHeader {
+  width: 100%;
+
+  > h1 {
+    font-weight: normal;
+    font-size:36px;
+    color: $redSuperLight;
+    width: 100%;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+  }
+}
 
 .commonForm {
+  @include clearfix;
   width: 640px;
-  background-color: $white;
-  border: 1px solid $gray;
-  border-radius: 4px;
+  background-color: rgb(39, 62, 71);
   display: block;
-  font-family: 'PT Sans';
   box-shadow: 0 0 32px  rgba(0, 0, 0, 0.025);
+  padding: 40px 0;
 
   @media screen and (max-width: 700px) {
     width: 400px;
     border: none;
   }
 
-  > .commonFormHeader {
-    margin: 40px auto 0 auto;
-    width: 100%;
-
-    > h1 {
-      font-weight: normal;
-      font-size: 42px;
-      color: $blackLight;
-      width: 100%;
-      text-align: center;
-      margin: 0;
-    }
-  }
-
   > .commonFormBody {
-    width: 480px;
+    width: 540px;
     @media screen and (max-width: 700px) {
       width: 280px;
     }
     margin: 16px auto 12px auto;
   
     > .commonFormControl {
-      margin: 8px 0;
+      margin: 20px 0;
     }
   
     > button {
+      float: right;
       margin: 24px auto 0 auto;
     }
   }

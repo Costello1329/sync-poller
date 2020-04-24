@@ -1,5 +1,6 @@
 import React from "react";
 import {localization} from "../../../static/Localization";
+import {Button, ButtonType} from "../../userInterface/button";
 
 import "./styles.scss";
 

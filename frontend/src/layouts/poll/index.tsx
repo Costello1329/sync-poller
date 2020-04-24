@@ -1,6 +1,9 @@
 import React from "react";
 import {Header} from "../../components/bars/header";
 import {Footer} from "../../components/bars/footer";
+import {Question} from "../../components/poll/question";
+
+import "./styles.scss";
 
 
 
@@ -17,11 +20,13 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
 
   render = (): JSX.Element => {
     return (
-      <React.Fragment>
+      <div className = {"pollLayoutWrapper"}>
         <Header/>
-
+        <main>
+          <Question/>
+        </main>
         <Footer/>
-      </React.Fragment>
+      </div>
     );
   }
 }

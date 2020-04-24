@@ -7,14 +7,12 @@
 
   font-family: "PT Sans";
   width: 100%;
-  background-color: $whiteHalfDark;
-  border-radius: 8px 8px 0 0;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid $whiteExtraDark;
-  position: fixed;
-  bottom: 0;
-  height: 60px;
   box-sizing: border-box;
+  height: 42px;
+  position: relative;
+  background-color: rgb(64, 87, 102);
+  color: #eee;
 
   > div {
     display: table;
@@ -35,6 +33,5 @@
       vertical-align: middle;
       font-weight: normal;
     }
-
   }
 }

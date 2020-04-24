@@ -10,3 +10,6 @@ export const authorizedEventGuid: Guid =
 
 export const logoutEventGuid: Guid =
   new Guid("ad9a4eec-c2b5-4dec-9c0b-eee1a42371bf");
+
+export const gotPollEventGuid: Guid =
+  new Guid("e4a5ae7d-534c-402e-8474-1ad50e0bc71f");

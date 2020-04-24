@@ -11,104 +11,78 @@
   border: none;
   transition: color 0.1s;
   font-family: 'PT Sans';
+  text-transform: uppercase;
+  border-radius: 1px;
 
-  &.commonButtonOrange {
-    background-color: $orange;
-    color: $blackLight;
+  &:hover {
+    cursor: pointer;
+  }
 
-    &.commonButtonSmall {
-      width: 160px;
-      height: 24px;
-      border-radius: 4px;
-      font-size: 14px;
-    }
+  &:active {
+    transform: translate(0, 2px);
+  }
 
-    &.commonButtonMedium {
-      width: 240px;
-      height: 32px;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+  &.commonButtonSmall {
+    width: 160px;
+    height: 24px;
+    font-size: 14px;
+  }
 
-    &.commonButtonBig {
-      width: 320px;
-      height: 40px;
-      border-radius: 4px;
-      font-size: 16px;
+  &.commonButtonMedium {
+    width: 200px;
+    height: 28px;
+    font-size: 15px;
+  }
 
-      @media screen and (max-width: 700px) {
-        width: 240px;
-      }
-    }
+  &.commonButtonLarge {
+    width: 240px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  &.commonButtonExtraLarge {
+    width: 320px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  &.commonButtonRed {
+    background-color: rgb(183, 74, 74);
+    box-shadow: 0 2px 0 0 rgb(70, 30, 30);
 
     &:hover {
-      color: $white;
-      cursor: pointer;
-    }
-
-    &:active {
-      background-color: $orangeDark;
+      background-color: rgb(200, 80, 80);
     }
   }
 
   &.commonButtonGray {
-    background-color: $grayLight;
-    color: $blackLight;
-
-    &.commonButtonSmall {
-      width: 160px;
-      height: 24px;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-
-    &.commonButtonMedium {
-      width: 240px;
-      height: 32px;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-
-    &.commonButtonBig {
-      width: 320px;
-      height: 40px;
-      border-radius: 4px;
-      font-size: 16px;
-    }
+    background-color: #eee;
+    box-shadow: 0 2px 0 0 #777;
 
     &:hover {
-      color: $white;
-      cursor: pointer;
-    }
-
-    &:active {
-      background-color: $gray;
+      background-color: 0 2px 0 0 rgb(200, 80, 80);
     }
   }
 
   &.commonButtonTransparent {
-    display: block;
-    background: none;
-    color: $orange;
+    background-color: transparent;
+    box-shadow: 0 2px 0 0 rgb(200, 80, 80);
+    color: #ddd;
 
     &.commonButtonSmall {
-      border-radius: 4px;
-      font-size: 14px;
+      width: 80px;
     }
 
     &.commonButtonMedium {
-      border-radius: 4px;
-      font-size: 16px;
+      width: 120px;
     }
 
     &.commonButtonBig {
-      border-radius: 4px;
-      font-size: 16px;
+      width: 160px;
     }
+  }
 
-    &:hover {
-      color: $orangeDark;
-      cursor: pointer;
-    }
+  &:active {
+    box-shadow: none;
   }
 }

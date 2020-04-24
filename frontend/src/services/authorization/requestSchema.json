@@ -1,9 +1,10 @@
 {
   "type": "object",
   "properties": {
-    "user": { "$ref": "#/definitions/Guid" }
+    "user": { "$ref": "#/definitions/Guid" },
+    "poll": { "$ref": "#/definitions/Guid" }
   },
-  "required": ["user"],
+  "required": ["user", "poll"],
   "additionalProperties": false,
   "definitions": {
     "Guid": {

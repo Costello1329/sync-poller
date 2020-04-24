@@ -1,0 +1,36 @@
+{
+  "anyOf": [
+    { "$ref": "#/definitions/pollResponseBefore" },
+    { "$ref": "#/definitions/pollResponseOpen" },
+    { "$ref": "#/definitions/pollResponseAfter" }
+  ],
+
+  "definitions": {
+    "pollResponseBefore": {
+      "type": "object",
+      "properties": {
+        "status": { "const": "before" }
+      },
+      "required": ["status"],
+      "additionalProperties": false
+    },
+
+    "pollResponseOpen": {
+      "type": "object",
+      "properties": {
+        "status": { "const": "open" }
+      },
+      "required": ["status"],
+      "additionalProperties": false
+    },
+
+    "pollResponseAfter": {
+      "type": "object",
+      "properties": {
+        "status": { "const": "after" }
+      },
+      "required": ["status"],
+      "additionalProperties": false
+    }
+  }
+}
