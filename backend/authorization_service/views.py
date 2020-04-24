@@ -4,6 +4,7 @@ from main_function import http_response, session
 from main_function.request_validate import validate_request
 from manage_service.models import Tokens
 from .req_schema import req_schema
+from .res_schema import res_schema
 
 
 class UserView(APIView):
@@ -22,4 +23,4 @@ class UserView(APIView):
             body = {
                 "authorized": False
             }
-        return http_response.get_response_success(body, session_guid)
+        return http_response.get_response_success(body, session_guid, res_schema)

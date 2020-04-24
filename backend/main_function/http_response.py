@@ -1,5 +1,6 @@
 from enum import Enum
 
+from jsonschema import validate, ValidationError
 from rest_framework.response import Response
 
 k_cookie_expiration_time = 2 * 7 * 24 * 60 * 60  # (2 weeks in seconds)
@@ -31,12 +32,15 @@ def setup_cors_response_headers(res):
     return res
 
 
-def get_response_success(body, session_guid):
+def get_response_success(body, session_guid, schema):
+    try:
+        validate(instance=body, schema=schema)
+    except ValidationError:
+        return get_response_error(ResponseErrorType.Validation, 500)
     res = setup_cors_response_headers(Response(body, status=200, content_type="application/json"))
 
     if session_guid is not None:
         res.set_cookie("session", value=session_guid, max_age=k_cookie_expiration_time)
-
     return res
 
 
