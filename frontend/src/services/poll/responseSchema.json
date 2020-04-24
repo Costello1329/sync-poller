@@ -1,34 +1,36 @@
 {
   "anyOf": [
-    { "$ref": "#/definitions/haveGotUser" },
-    { "$ref": "#/definitions/haveNotGotUser" }
+    { "$ref": "#/definitions/pollResponseBefore" },
+    { "$ref": "#/definitions/pollResponseOpen" },
+    { "$ref": "#/definitions/pollResponseAfter" }
   ],
 
   "definitions": {
-    "haveGotUser": {
+    "pollResponseBefore": {
       "type": "object",
       "properties": {
-        "gotUser": { "const": "true" },
-        "role": { "enum": ["student"] },
-        "userGuid": { "$ref": "#/definitions/Guid" }
+        "status": { "const": "before" }
       },
-      "required": ["gotUser", "role", "userGuid"],
+      "required": ["status"],
       "additionalProperties": false
     },
 
-    "haveNotGotUser": {
+    "pollResponseOpen": {
       "type": "object",
       "properties": {
-        "gotUser": { "const": "false" }
+        "status": { "const": "open" }
       },
-      "required": ["gotUser"],
+      "required": ["status"],
       "additionalProperties": false
     },
 
-    "Guid": {
-      "type": "string",
-      "pattern":
-        "[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[8-b][0-9a-f]{3}-[0-9a-f]{12}"
+    "pollResponseAfter": {
+      "type": "object",
+      "properties": {
+        "status": { "const": "after" }
+      },
+      "required": ["status"],
+      "additionalProperties": false
     }
   }
 }

@@ -1,4 +1,4 @@
-class LocalizationService {
+class Localization {
   readonly authorizationHeader = (): string => "Authorization";
   readonly token = (): string => "Token";
   readonly emptyString = (): string => "Field is necessary";
@@ -14,4 +14,4 @@ class LocalizationService {
     localization.mainTitle() + " © " + new Date().getFullYear();
 }
 
-export const localization: LocalizationService = new LocalizationService();
+export const localization: Localization = new Localization();

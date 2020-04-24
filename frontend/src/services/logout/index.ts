@@ -11,9 +11,10 @@ import {
   HttpMethod,
   HttpConnection
 } from "../../utils/HttpConnection";
-import {apiEndpoints, apiUrl} from "../../static/Preferences";
+import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
 import Cookies from 'js-cookie'
+import { storageService } from "../storage";
 
 
 
@@ -40,7 +41,8 @@ extends EventRecepient<void, LogoutServiceEvent> {
  */
 
 interface LogoutRequest {
-  session: string /// Guid string
+  session: string, /// Guid string
+  poll: string /// Guid string
 }
 
 interface LogoutResponse {}
@@ -53,7 +55,7 @@ extends EventSender<void, LogoutServiceEvent> {
 
   logout (): void {
     const connection: HttpConnection<LogoutRequest, LogoutResponse> =
-      new HttpConnection<LogoutRequest, LogoutResponse>(apiUrl);
+      new HttpConnection<LogoutRequest, LogoutResponse>(preferences.apiUrl);
 
     connection.setRequestValidator(
       new JsonSchemaValidator<LogoutRequest>(
@@ -67,22 +69,22 @@ extends EventSender<void, LogoutServiceEvent> {
       )
     );
 
-    const session: string | undefined = Cookies.get('session');
+    const session: Guid | null = storageService.getSession();
+    const poll: Guid | null = storageService.getPoll();
 
-    if (session === undefined) {
-      /// TODO: send message about bad cookie:
+    if (session === null || poll === null)
       return;
-    }
 
     const request: HttpQuery<LogoutRequest> =  {
       headers: {},
       data: {
-        session: session
+        session: session.guid,
+        poll: poll.guid
       }
     };
 
     connection
-      .send(apiEndpoints.logout, HttpMethod.post, request)
+      .send(preferences.apiEndpoints.logout, HttpMethod.post, request)
       .then(
         (response: HttpQuery<LogoutResponse>): void => {
           this.sendEvent(new LogoutServiceEvent(logoutEventGuid));

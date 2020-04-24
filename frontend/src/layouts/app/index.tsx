@@ -80,8 +80,6 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   render (): JSX.Element {
-    return <PollLayout/>;
-    /*
     if (!this.state.gotUser) {
       // TODO: loading screen:
       return <></>;
@@ -92,7 +90,7 @@ export class App extends React.Component<AppProps, AppState> {
     
     else if (this.state.user instanceof AuthorizedUser) {
       if (this.state.user instanceof StudentUser)
-        return <PollLayout/>; // TODO: poll screen
+        return <PollLayout/>;
 
       else
         return <></>; // TODO: Forbidden screen
@@ -100,6 +98,5 @@ export class App extends React.Component<AppProps, AppState> {
 
     else
       return <></>; // TODO: Forbidden screen
-    */
   }
 }

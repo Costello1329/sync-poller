@@ -17,6 +17,7 @@ export class Guid {
   }
 }
 
+
 export const getRandomGuid = (): Guid => {
   const replacer = (chart: string): string => { 
     const randomValue = Math.random() * 16 | 0;

@@ -11,9 +11,9 @@ import {
   HttpMethod,
   HttpConnection
 } from "../../utils/HttpConnection";
-import {apiEndpoints, apiUrl} from "../../static/Preferences";
+import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import Cookies from 'js-cookie'
+import {storageService} from "../storage";
 
 
 
@@ -65,6 +65,7 @@ extends EventRecepient<User, UserServiceEvent> {
 
 interface UserRequest {
   session: string /// Guid string
+  poll: string /// Guid string
 }
 
 interface UserResponseHaveGotUser {
@@ -86,7 +87,7 @@ export class UserService extends EventSender<User, UserServiceEvent> {
 
   getUser (): void {
     const connection: HttpConnection<UserRequest, UserResponse> =
-      new HttpConnection<UserRequest, UserResponse>(apiUrl);
+      new HttpConnection<UserRequest, UserResponse>(preferences.apiUrl);
 
     connection.setRequestValidator(
       new JsonSchemaValidator<UserRequest>(require("./requestSchema.json"))
@@ -96,9 +97,10 @@ export class UserService extends EventSender<User, UserServiceEvent> {
       new JsonSchemaValidator<UserResponse>(require("./responseSchema.json"))
     );
 
-    const session: string | undefined = Cookies.get('session');
+    const session: Guid | null = storageService.getSession();
+    const poll: Guid | null = storageService.getPoll();
 
-    if (session === undefined) {
+    if (session === null || poll === null) {
       /// TODO: send message about bad cookie:
       this.sendEvent(new UserServiceEvent(
         new UnauthorizedUser(),
@@ -110,12 +112,13 @@ export class UserService extends EventSender<User, UserServiceEvent> {
     const request: HttpQuery<UserRequest> =  {
       headers: {},
       data: {
-        session: session
+        session: session.guid,
+        poll: poll.guid
       }
     };
 
     connection
-      .send(apiEndpoints.user, HttpMethod.post, request)
+      .send(preferences.apiEndpoints.user, HttpMethod.post, request)
       .then(
         (response: HttpQuery<UserResponse>): void => {
           let user: User = new UnauthorizedUser();

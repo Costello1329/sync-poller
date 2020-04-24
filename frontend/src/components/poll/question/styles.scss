@@ -1,0 +1,46 @@
+@import "../../../static/colorScheme.scss";
+@import "../../../utils/clearfix.scss";
+
+
+.pollQuestion {
+  width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+
+  > .pollQuestionProblemHeader {
+    width: 100%;
+
+    > h1 {
+      font-weight: normal;
+      text-transform: uppercase;
+      font-size: 36px;
+      color: $redSuperLight;
+      width: 100%;
+      margin: 0 0 8px 32px;
+    }
+  }
+
+  > .pollQuestionProblem {
+    margin-top: 8px;
+    background: rgb(30, 48, 55);
+    box-shadow:0 0 20px 10px rgba(0, 0, 0, 0.1);
+    
+    > .pollQuestionProblemText {
+      font-size: 16px;
+      padding: 16px 32px;
+      color: #eee;
+    }
+
+    > .pollQuestionProblemCode {
+      font-size: 14px;
+
+      > pre {
+        margin: 0px;
+        padding-left: 20px !important;
+      }
+    }
+  }
+}
+
+
+

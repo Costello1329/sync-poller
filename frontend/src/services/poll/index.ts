@@ -11,9 +11,9 @@ import {
   HttpMethod,
   HttpConnection
 } from "../../utils/HttpConnection";
-import {apiEndpoints, apiUrl} from "../../static/Preferences";
+import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import Cookies from 'js-cookie'
+import { storageService } from "../storage";
 
 
 
@@ -53,7 +53,8 @@ extends EventRecepient<PollDescriptor, PollServiceEvent> {
  */
 
 interface PollRequest {
-  session: string /// Guid string
+  session: string, /// Guid string
+  poll: string /// Guid string
 }
 
 interface PollResponseBefore {
@@ -79,7 +80,7 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
 
   getPoll (): void {
     const connection: HttpConnection<PollRequest, PollResponse> =
-      new HttpConnection<PollRequest, PollResponse>(apiUrl);
+      new HttpConnection<PollRequest, PollResponse>(preferences.apiUrl);
 
     connection.setRequestValidator(
       new JsonSchemaValidator<PollRequest>(require("./requestSchema.json"))
@@ -89,22 +90,22 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       new JsonSchemaValidator<PollResponse>(require("./responseSchema.json"))
     );
 
-    const session: string | undefined = Cookies.get('session');
+    const session: Guid | null = storageService.getSession();
+    const poll: Guid | null = storageService.getPoll();
 
-    if (session === undefined) {
-      /// TODO: send message about bad cookie:
+    if (session === null || poll === null)
       return;
-    }
 
     const request: HttpQuery<PollRequest> =  {
       headers: {},
       data: {
-        session: session
+        session: session.guid,
+        poll: session.guid
       }
     };
 
     connection
-      .send(apiEndpoints.poll, HttpMethod.post, request)
+      .send(preferences.apiEndpoints.poll, HttpMethod.post, request)
       .then(
         (response: HttpQuery<PollResponse>): void => {
           let poll: PollDescriptor = new PollDescriptor(response.data.status);

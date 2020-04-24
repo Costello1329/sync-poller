@@ -42,10 +42,13 @@ React.Component<AuthorizationFormProps, AuthorizationFormState> {
       },
       submitHandler: (values: string[]) => {
         const [user] = values;
-
         authorizationService.authorize(new Guid(user));
       }
     };
+  }
+
+  shouldComponentUpdate (): boolean {
+    return false;
   }
 
   render (): JSX.Element {
