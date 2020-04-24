@@ -47,19 +47,19 @@ class UsersStorage:
         else:
             return True
 
-    def create_user(self, session_guid: str, user_guid: str):
-        self.users_storage.mset({str(session_guid): str(user_guid)})
+    def create_user(self, session_guid: str, user_token: str):
+        self.users_storage.mset({str(session_guid): str(user_token)})
 
     def delete_user(self, session_guid: str):
         if not self.check_user(session_guid):
             return
         self.users_storage.delete(str(session_guid))
 
-    def get_user_guid(self, session_guid):
+    def get_user_token(self, session_guid):
         if not self.check_user(session_guid):
             return None
-        user_guid = self.users_storage.get(str(session_guid)).decode("utf-8")
-        return user_guid
+        user_token = self.users_storage.get(str(session_guid)).decode("utf-8")
+        return user_token
 
 
 def create_new_session(token: str):
@@ -78,6 +78,13 @@ def delete_session(token: str):
     sessions_user = UsersStorage()
     sessions_user.delete_user(sessions.get_session_guid(token))
     sessions.delete_session(token)
+
+
+def delete_session_with_session_guid(session_guid: str):
+    sessions = SessionsStorage()
+    sessions_user = UsersStorage()
+    sessions.delete_session(sessions_user.get_user_token(session_guid))
+    sessions_user.delete_user(session_guid)
 
 
 def validate_session(session_guid):
