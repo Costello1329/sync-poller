@@ -30,4 +30,4 @@ def validate_poll(poll_guid: str, session_guid: str):
     if not token_db:
         return False
     token_db = token_db[0]
-    return token_db.pool.guid == poll_guid
+    return token_db.poll.guid == poll_guid
