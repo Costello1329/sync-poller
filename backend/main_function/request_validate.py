@@ -1,5 +1,7 @@
 from jsonschema import validate, ValidationError
 
+from manage_service.models import Tokens
+from . import session
 from .http_response import get_response_error, get_response_reject, ResponseErrorType
 from .session import validate_session
 
@@ -20,3 +22,12 @@ def validate_request(schema):
         return request_handler
 
     return request_dec
+
+
+def validate_poll(poll_guid: str, session_guid: str):
+    user_token = session.get_user_token_for_session_guid(session_guid)
+    token_db = Tokens.objects.filter(guid=user_token)
+    if not token_db:
+        return False
+    token_db = token_db[0]
+    return token_db.pool.guid == poll_guid

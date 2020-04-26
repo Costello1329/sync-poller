@@ -87,6 +87,11 @@ def delete_session_with_session_guid(session_guid: str):
     sessions_user.delete_user(session_guid)
 
 
-def validate_session(session_guid):
+def validate_session(session_guid: str):
     sessions_user = UsersStorage()
     return sessions_user.check_user(session_guid)
+
+
+def get_user_token_for_session_guid(session_guid: str):
+    sessions_user = UsersStorage()
+    return sessions_user.get_user_token(session_guid)
