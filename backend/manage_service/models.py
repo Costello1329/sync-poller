@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from main_function.session import delete_session
+from main_function.sessions_storage import logout_user
 
 
 # Create your models here.
@@ -20,7 +20,7 @@ class Tokens(models.Model):
 
 @receiver(models.signals.pre_delete, sender=Tokens, dispatch_uid='token_delete_signal')
 def delete_tokens_session(sender, instance, using, **kwargs):
-    delete_session(instance.guid)
+    logout_user(instance.guid)
 
 
 class PeopleAnswer(models.Model):
