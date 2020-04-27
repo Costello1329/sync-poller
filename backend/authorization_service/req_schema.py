@@ -1,7 +1,8 @@
 req_schema = {
     "type": "object",
     "properties": {
-        "user": {"$ref": "#/definitions/Guid"}
+        "user": {"$ref": "#/definitions/Guid"},
+        "poll": {"$ref": "#/definitions/Guid"}
     },
     "required": ["user"],
     "additionalProperties": False,

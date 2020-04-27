@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from manage_service.models import Tokens, Polls
+from manage_service.models import UserGuid, Poll
 
-admin.site.register(Tokens)
-admin.site.register(Polls)
+admin.site.register(UserGuid)
+admin.site.register(Poll)

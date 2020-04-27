@@ -1,7 +1,8 @@
 req_schema = {
     "type": "object",
     "properties": {
-        "session": {"$ref": "#/definitions/Guid"}
+        "session": {"$ref": "#/definitions/Guid"},
+        "poll": {"$ref": "#/definitions/Guid"}
     },
     "required": ["session"],
     "additionalProperties": False,
