@@ -7,7 +7,7 @@ def send_response(body, schema):
         validate(instance=body, schema=schema)
     except ValidationError:
         return get_reject_response()
-    return get_success_response()
+    return get_success_response(body)
 
 
 def setup_cors_response_headers(res):
@@ -20,7 +20,7 @@ def setup_cors_response_headers(res):
     return res
 
 
-def get_success_response():
+def get_success_response(body):
     return setup_cors_response_headers(Response(body, status=200, content_type="application/json"))
 
 

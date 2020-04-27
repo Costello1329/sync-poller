@@ -9,7 +9,7 @@ class InvalidData(Exception):
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "    Warning:                                  "
-"    This is an inner serivice and should not  "
+"    This is an inner service and should not   "
 "    be used inside the handlers!              "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
@@ -21,7 +21,7 @@ class SessionsStorage:
         self.sessions = redis.Redis(host='localhost', port=6379, db=0)
 
     def is_session_attached(self, user: str):
-        return self.sessions.exists(str(user))
+        return bool(self.sessions.exists(str(user)))
 
     def attach_session(self, user: str, session):
         self.sessions.mset({str(user): str(session)})
@@ -39,7 +39,7 @@ class SessionsStorage:
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 "    Warning:                                  "
-"    This is an inner serivice and should not  "
+"    This is an inner service and should not   "
 "    be used inside the handlers!              "
 """"""""""""""""""""""""""""""""""""""""""""""""
 
@@ -51,7 +51,7 @@ class UsersStorage:
         self.users_storage = redis.Redis(host='127.0.0.1', port=6379, db=1)
 
     def is_user_attached(self, session):
-        return self.users_storage.exists(str(session))
+        return bool(self.users_storage.exists(str(session)))
 
     def attach_user(self, session: str, user: str):
         self.users_storage.mset({str(session): str(user)})
@@ -77,7 +77,7 @@ def authorize_user(user: str, allow_multiple_sessions=False):
     users = UsersStorage()
     session = str(uuid.uuid4())
 
-    if not allow_multiple_sessions and sessions.is_session_attached(user_token):
+    if not allow_multiple_sessions and sessions.is_session_attached(user):
         # If the session for this user exists, we need to delete it
         # in order logout the user from the initial session and
         # rebind him to the newly created session:
