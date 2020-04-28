@@ -8,7 +8,7 @@
     "haveGotUser": {
       "type": "object",
       "properties": {
-        "gotUser": { "const": "true" },
+        "gotUser": { "const": true },
         "role": { "enum": ["student"] },
         "userGuid": { "$ref": "#/definitions/Guid" }
       },
@@ -19,7 +19,7 @@
     "haveNotGotUser": {
       "type": "object",
       "properties": {
-        "gotUser": { "const": "false" }
+        "gotUser": { "const": false }
       },
       "required": ["gotUser"],
       "additionalProperties": false

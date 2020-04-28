@@ -63,9 +63,11 @@ export class App extends React.Component<AppProps, AppState> {
 
     /// Authorization service event:
     if (event instanceof AuthorizationServiceEvent) {
-      if (event.eventGuid === authorizedEventGuid)
-        if (event.data === true)
+      if (event.eventGuid === authorizedEventGuid) {
+        if (event.data === true) {
           userService.getUser();
+        }
+      }
     }
 
     /// Logout service event:

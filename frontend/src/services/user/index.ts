@@ -71,7 +71,7 @@ interface UserRequest {
 interface UserResponseHaveGotUser {
   gotUser: true
   role: string /// "student"
-  user: string /// Guid string
+  userGuid: string /// Guid string
 }
 
 interface UserResponseHaveNotGotUser {
@@ -126,7 +126,7 @@ export class UserService extends EventSender<User, UserServiceEvent> {
           if (response.data.gotUser === true) {
             switch (response.data.role) {
               case "student": {
-                user = new StudentUser(new Guid(response.data.user));
+                user = new StudentUser(new Guid(response.data.userGuid));
                 break;
               }
             }

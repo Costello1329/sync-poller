@@ -45,12 +45,12 @@ interface AuthorizationRequest {
 }
 
 interface AuthorizationResponseHaveAuthorized {
-  haveAuthorized: true
+  authorized: true
   session: string /// Guid string
 }
 
 interface AuthorizationResponseHaveNotAuthorized {
-  haveAuthorized: false
+  authorized: false
 }
 
 type AuthorizationResponse =
@@ -97,12 +97,12 @@ extends EventSender<boolean, AuthorizationServiceEvent> {
       .send(preferences.apiEndpoints.authorization, HttpMethod.post, request)
       .then(
         (response: HttpQuery<AuthorizationResponse>): void => {
-          if (response.data.haveAuthorized === true)
+          if (response.data.authorized === true)
             storageService.setSession(new Guid(response.data.session));
 
           this.sendEvent(
             new AuthorizationServiceEvent(
-              response.data.haveAuthorized,
+              response.data.authorized,
               authorizedEventGuid
             )
           );

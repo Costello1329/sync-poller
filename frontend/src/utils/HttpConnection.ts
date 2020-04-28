@@ -64,8 +64,10 @@ export class HttpConnection<RequestData, ResponseData> {
           .request(config)
           .then(
             (response: AxiosResponse<any>): void => {
+              const contentType: string = response.config.headers["Content-Type"];
+
               if (
-                response.config.responseType !== 'json' ||
+                !contentType.includes("application/json") ||
                 !this.responseValidator.validate(response.data)
               ) {
                 /// TODO: Response contract validation error.

@@ -25,7 +25,7 @@ class StorageService {
   setSession (session: Guid): void {
     Cookies.set(
       Preferences.sessionCookie.key,
-      session,
+      session.guid,
       {
         expires: Preferences.sessionCookie.expirationTime
       }
