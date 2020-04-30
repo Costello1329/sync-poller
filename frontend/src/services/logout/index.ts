@@ -2,7 +2,7 @@ import {Guid} from "../../utils/Guid";
 import {logoutEventGuid} from "../../static/Constants";
 import {
   Event,
-  Subscriber,
+  EventSubscriber,
   EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
@@ -22,16 +22,16 @@ import { storageService } from "../storage";
  * Service subscription model implementation:
  */
 
-export class LogoutServiceEvent extends Event<void> {
+export class LogoutServiceEvent extends Event<null> {
   constructor (guid: Guid) {
-    super(undefined, guid);
+    super(null, guid);
   }
 };
 
 export class LogoutServiceEventRecipient
-extends EventRecepient<void, LogoutServiceEvent> {
-  constructor (callback: Subscriber<void, LogoutServiceEvent>) {
-    super(logoutService, callback);
+extends EventRecepient<null, LogoutServiceEvent> {
+  constructor (subscriber: EventSubscriber<null, LogoutServiceEvent>) {
+    super(logoutService, subscriber);
   }
 }
 
@@ -48,7 +48,7 @@ interface LogoutRequest {
 interface LogoutResponse {}
 
 export class LogoutService
-extends EventSender<void, LogoutServiceEvent> {
+extends EventSender<null, LogoutServiceEvent> {
   constructor () {
     super();
   }

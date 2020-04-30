@@ -2,7 +2,7 @@ import {Guid} from "../../utils/Guid";
 import {gotPollEventGuid} from "../../static/Constants";
 import {
   Event,
-  Subscriber,
+  EventSubscriber,
   EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
@@ -54,8 +54,8 @@ export class PollServiceEvent extends Event<PollDescriptor> {
 
 export class PollServiceEventRecipient
 extends EventRecepient<PollDescriptor, PollServiceEvent> {
-  constructor (callback: Subscriber<PollDescriptor, PollServiceEvent>) {
-    super(pollService, callback);
+  constructor (subscriber: EventSubscriber<PollDescriptor, PollServiceEvent>) {
+    super(pollService, subscriber);
   }
 }
 

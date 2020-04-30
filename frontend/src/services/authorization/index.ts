@@ -2,7 +2,7 @@ import {Guid} from "../../utils/Guid";
 import {authorizedEventGuid} from "../../static/Constants";
 import {
   Event,
-  Subscriber,
+  EventSubscriber,
   EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
@@ -13,7 +13,7 @@ import {
 } from "../../utils/HttpConnection";
 import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import { storageService } from "../storage";
+import {storageService} from "../storage";
 
 
 
@@ -29,8 +29,8 @@ export class AuthorizationServiceEvent extends Event<boolean> {
 
 export class AuthorizationServiceEventRecipient
 extends EventRecepient<boolean, AuthorizationServiceEvent> {
-  constructor (callback: Subscriber<boolean, AuthorizationServiceEvent>) {
-    super(authorizationService, callback);
+  constructor (subscriber: EventSubscriber<boolean, AuthorizationServiceEvent>) {
+    super(authorizationService, subscriber);
   }
 }
 

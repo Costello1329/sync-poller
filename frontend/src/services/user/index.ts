@@ -2,7 +2,7 @@ import {Guid, getRandomGuid} from "../../utils/Guid";
 import {gotUserEventGuid} from "../../static/Constants";
 import {
   Event,
-  Subscriber,
+  EventSubscriber,
   EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
@@ -53,8 +53,8 @@ export class UserServiceEvent extends Event<User> {
 
 export class UserServiceEventRecipient
 extends EventRecepient<User, UserServiceEvent> {
-  constructor (callback: Subscriber<User, UserServiceEvent>) {
-    super(userService, callback);
+  constructor (subscriber: EventSubscriber<User, UserServiceEvent>) {
+    super(userService, subscriber);
   }
 }
 

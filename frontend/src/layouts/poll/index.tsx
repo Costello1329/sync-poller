@@ -35,28 +35,27 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
       poll: undefined
     };
 
-    new PollServiceEventRecipient(this.gotEvent);
-    new LogoutServiceEventRecipient(this.gotEvent);
+    new PollServiceEventRecipient(this);
+    new LogoutServiceEventRecipient(this);
   }
 
-  private readonly gotEvent = (
+  readonly gotEvent = (
     event: PollServiceEvent | LogoutServiceEvent
   ): void => {
     /// Poll service:
-    if (event instanceof PollServiceEvent) {
+    if (event instanceof PollServiceEvent)
       if (event.eventGuid === gotPollEventGuid)
         this.setState({
           gotPoll: true,
           poll: event.data
         });
-    }
 
     /// Logout service:
-    if (event instanceof LogoutServiceEvent)
+    if (event instanceof LogoutServiceEvent) {
       if (event.eventGuid === logoutEventGuid) {
-        alert("HI");
-        // TODO: Don't forget to sae data before logout.
+        // TODO: Don't forget to send data before logout.
       }
+    }
   }
 
   componentDidMount () {
