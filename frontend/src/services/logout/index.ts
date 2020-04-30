@@ -87,6 +87,7 @@ extends EventSender<void, LogoutServiceEvent> {
       .send(preferences.apiEndpoints.logout, HttpMethod.post, request)
       .then(
         (response: HttpQuery<LogoutResponse>): void => {
+          storageService.deleteSession();
           this.sendEvent(new LogoutServiceEvent(logoutEventGuid));
         },
         (error: Error): void => {

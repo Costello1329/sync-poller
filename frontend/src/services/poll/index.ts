@@ -1,4 +1,4 @@
-import {Guid, getRandomGuid} from "../../utils/Guid";
+import {Guid} from "../../utils/Guid";
 import {gotPollEventGuid} from "../../static/Constants";
 import {
   Event,
@@ -17,15 +17,25 @@ import { storageService } from "../storage";
 
 
 
-enum PollStatus {
+export enum PollStatus {
   Before = "before",
   Open = "open",
   After = "after"
 }
 
-export class PollDescriptor {
-  constructor (readonly status: PollStatus) {
-
+export interface PollQuestion {
+  endTime: number; /// time in ticks, when question should end.
+  title: string;
+  id: number;
+  problem: {
+    type: "text" | "code";
+    text: string;
+  }[],
+  solution: {
+    type: "selectOne" | "selectMultiple",
+    labels: string[]
+  } | {
+    type: "textField"
   }
 }
 
@@ -33,6 +43,8 @@ export class PollDescriptor {
 /**
  * Service subscription model implementation:
  */
+
+export type PollDescriptor = PollResponse;
 
 export class PollServiceEvent extends Event<PollDescriptor> {
   constructor (poll: PollDescriptor, guid: Guid) {
@@ -59,12 +71,12 @@ interface PollRequest {
 
 interface PollResponseBefore {
   status: PollStatus.Before,
-  time: number /// time in ticks
+  startTime: number /// time in ticks, when poll will start
 }
 
 interface PollResponseOpen {
-  status: PollStatus.Open
-  /// TODO: poll descriptor here.
+  status: PollStatus.Open,
+  currentQuestion: PollQuestion
 }
 
 interface PollResponseAfter {
@@ -108,8 +120,7 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       .send(preferences.apiEndpoints.poll, HttpMethod.post, request)
       .then(
         (response: HttpQuery<PollResponse>): void => {
-          let poll: PollDescriptor = new PollDescriptor(response.data.status);
-
+          const poll: PollDescriptor = response.data;
           this.sendEvent(new PollServiceEvent(poll, gotPollEventGuid));
         },
         (error: Error): void => {

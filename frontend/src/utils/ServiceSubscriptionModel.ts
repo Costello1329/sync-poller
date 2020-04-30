@@ -25,14 +25,15 @@ export type Subscriber<Data, ReceivedEvent extends Event<Data>> =
   (event: ReceivedEvent) => void;
 
 export abstract class EventSender<Data, ReceivedEvent extends Event<Data>> {
-  declare private subscribers: Subscriber<Data, ReceivedEvent>[];
+  /// TODO: Solve the problem with double-subscribing.
+  declare private subscribers: Set<Subscriber<Data, ReceivedEvent>>;
 
   constructor () {
-    this.subscribers = [];
+    this.subscribers = new Set<Subscriber<Data, ReceivedEvent>>();
   }
 
   subscribe (eventRecepient: Subscriber<Data, ReceivedEvent>): void {
-    this.subscribers.push(eventRecepient);
+    this.subscribers.add(eventRecepient);
   }
 
   protected sendEvent (event: ReceivedEvent): void {

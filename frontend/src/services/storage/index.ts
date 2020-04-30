@@ -32,6 +32,15 @@ class StorageService {
     );
   }
 
+  deleteSession (): void {
+    if (Cookies.get(Preferences.sessionCookie.key) === undefined) {
+      /// TODO: show session storing key error.
+    }
+
+    else
+      Cookies.remove(Preferences.sessionCookie.key);
+  }
+
   getPoll (): Guid | null {
     const poll: string | null =
       new URLSearchParams(window.location.search)

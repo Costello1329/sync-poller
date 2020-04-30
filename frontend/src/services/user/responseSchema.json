@@ -1,4 +1,6 @@
 {
+  "type": "object",
+
   "anyOf": [
     { "$ref": "#/definitions/haveGotUser" },
     { "$ref": "#/definitions/haveNotGotUser" }

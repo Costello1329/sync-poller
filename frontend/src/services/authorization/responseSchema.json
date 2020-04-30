@@ -1,5 +1,7 @@
 {
-  "anyOf": [
+  "type": "object",
+
+  "oneOf": [
     { "$ref": "#/definitions/haveAuthorized" },
     { "$ref": "#/definitions/haveNotAuthorized" }
   ],

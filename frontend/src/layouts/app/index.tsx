@@ -55,22 +55,20 @@ export class App extends React.Component<AppProps, AppState> {
   private readonly gotEvent = (
     event: UserServiceEvent | AuthorizationServiceEvent | LogoutServiceEvent
   ): void => {
-    /// User service event:
+    /// User service:
     if (event instanceof UserServiceEvent) {
       if (event.eventGuid == gotUserEventGuid)
         this.setState({user: event.data, gotUser: true});
     }
 
-    /// Authorization service event:
+    /// Authorization service:
     if (event instanceof AuthorizationServiceEvent) {
-      if (event.eventGuid === authorizedEventGuid) {
-        if (event.data === true) {
+      if (event.eventGuid === authorizedEventGuid)
+        if (event.data === true)
           userService.getUser();
-        }
-      }
     }
 
-    /// Logout service event:
+    /// Logout service:
     if (event instanceof LogoutServiceEvent) {
       if (event.eventGuid == logoutEventGuid)
         this.setState({user: new UnauthorizedUser(), gotUser: true});
@@ -78,7 +76,7 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidMount () {
-    this.setState({}, (): void => userService.getUser());
+    userService.getUser();
   }
 
   render (): JSX.Element {
