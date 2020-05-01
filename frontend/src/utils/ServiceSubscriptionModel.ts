@@ -11,41 +11,57 @@ export abstract class EventSubscriber<Data, ReceivedEvent extends Event<Data>> {
 }
 
 
-export abstract class EventRecepient<Data, ReceivedEvent extends Event<Data>> {
-  constructor (
-    eventSender: EventSender<Data, ReceivedEvent>,
-    subscriber: EventSubscriber<Data, ReceivedEvent>
-  ) {
-    eventSender.subscribe(subscriber.constructor.name, subscriber.gotEvent);
-  }
-}
-
-
 type GotEventCallback<Data, ReceivedEvent extends Event<Data>> =
   (event: ReceivedEvent) => void;
 
 export abstract class EventSender<Data, ReceivedEvent extends Event<Data>> {
-  declare private subscribers: Map<string, GotEventCallback<Data, ReceivedEvent>>;
+  declare private subscribers:
+    Map<string, [GotEventCallback<Data, ReceivedEvent>, number]>;
 
   constructor () {
-    this.subscribers = new Map<string, GotEventCallback<Data, ReceivedEvent>>();
+    this.subscribers =
+      new Map<string, [GotEventCallback<Data, ReceivedEvent>, number]>();
   }
 
   subscribe (
-    name: string,
-    gotEventCallback: GotEventCallback<Data, ReceivedEvent>,
+    subscriber: EventSubscriber<Data, ReceivedEvent>,
+    priority: number = 0,
     override: boolean = false
   ): void {
     if (!override)
       for (let [subscriberName, _] of this.subscribers)
-        if (subscriberName === name)
+        if (subscriberName === subscriber.constructor.name)
           return;
   
-    this.subscribers.set(name, gotEventCallback);
+    this.subscribers.set(
+      subscriber.constructor.name,
+      [subscriber.gotEvent, priority]
+    );
+  }
+
+  unsubscribe (
+    subscriber: EventSubscriber<Data, ReceivedEvent>
+  ): void {
+    this.subscribers.delete(subscriber.constructor.name);
   }
 
   protected sendEvent (event: ReceivedEvent): void {
-    for (let [_, gotEventCallback] of this.subscribers)
-      gotEventCallback(event);
+    const array: [GotEventCallback<Data, ReceivedEvent>, number][] =
+      Array.from(this.subscribers.values());
+
+    array
+    .sort(
+      (
+        first: [GotEventCallback<Data, ReceivedEvent>, number],
+        second: [GotEventCallback<Data, ReceivedEvent>, number]
+      ): number => {
+        return first[1] - second[1];
+      }
+    )
+    .forEach(
+      (element: [GotEventCallback<Data, ReceivedEvent>, number]): void => {
+        element[0](event);
+      }
+    );
   }
 }

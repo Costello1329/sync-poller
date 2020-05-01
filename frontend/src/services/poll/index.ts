@@ -1,9 +1,7 @@
 import {Guid} from "../../utils/Guid";
-import {gotPollEventGuid} from "../../static/Constants";
+import {gotPollEventGuid, gotPollFailedEventGuid} from "../../static/Constants";
 import {
   Event,
-  EventSubscriber,
-  EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
 import {
@@ -13,7 +11,7 @@ import {
 } from "../../utils/HttpConnection";
 import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import { storageService } from "../storage";
+import {storageService} from "../storage";
 
 
 
@@ -24,9 +22,9 @@ export enum PollStatus {
 }
 
 export interface PollQuestion {
-  endTime: number; /// time in ticks, when question should end.
+  endTime: number; /// time in ticks, when question should close.
   title: string;
-  id: number;
+  guid: string; /// Guid string
   problem: {
     type: "text" | "code";
     text: string;
@@ -44,20 +42,13 @@ export interface PollQuestion {
  * Service subscription model implementation:
  */
 
-export type PollDescriptor = PollResponse;
+export type PollDescriptor = PollResponse | undefined;
 
 export class PollServiceEvent extends Event<PollDescriptor> {
   constructor (poll: PollDescriptor, guid: Guid) {
     super(poll, guid);
   }
 };
-
-export class PollServiceEventRecipient
-extends EventRecepient<PollDescriptor, PollServiceEvent> {
-  constructor (subscriber: EventSubscriber<PollDescriptor, PollServiceEvent>) {
-    super(pollService, subscriber);
-  }
-}
 
 
 /**
@@ -125,10 +116,12 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
         },
         (error: Error): void => {
           /// TODO: Show error here
+          this.sendEvent(new PollServiceEvent(undefined, gotPollFailedEventGuid));
         }
       ).catch(
         (error: Error): void => {
           /// TODO: Show error here
+          this.sendEvent(new PollServiceEvent(undefined, gotPollFailedEventGuid));
         }
       );
   }

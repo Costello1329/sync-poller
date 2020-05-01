@@ -12,6 +12,7 @@ class Localization {
   readonly developers = (): string => ["Konstantin Leladze"].join(", ");
   readonly copyright = (): string =>
     localization.mainTitle() + " © " + new Date().getFullYear();
+  readonly solution = (): string => "Answer";
 }
 
 export const localization: Localization = new Localization();

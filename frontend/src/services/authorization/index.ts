@@ -3,7 +3,6 @@ import {authorizedEventGuid} from "../../static/Constants";
 import {
   Event,
   EventSubscriber,
-  EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
 import {
@@ -27,13 +26,6 @@ export class AuthorizationServiceEvent extends Event<boolean> {
   }
 };
 
-export class AuthorizationServiceEventRecipient
-extends EventRecepient<boolean, AuthorizationServiceEvent> {
-  constructor (subscriber: EventSubscriber<boolean, AuthorizationServiceEvent>) {
-    super(authorizationService, subscriber);
-  }
-}
-
 
 /**
  * HttpClient request-response JSON protocols:
@@ -56,8 +48,7 @@ interface AuthorizationResponseHaveNotAuthorized {
 type AuthorizationResponse =
   AuthorizationResponseHaveAuthorized | AuthorizationResponseHaveNotAuthorized;
 
-export class AuthorizationService
-extends EventSender<boolean, AuthorizationServiceEvent> {
+class AuthorizationService extends EventSender<boolean, AuthorizationServiceEvent> {
   constructor () {
     super();
   }

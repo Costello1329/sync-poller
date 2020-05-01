@@ -3,7 +3,6 @@ import {logoutEventGuid} from "../../static/Constants";
 import {
   Event,
   EventSubscriber,
-  EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
 import {
@@ -28,13 +27,6 @@ export class LogoutServiceEvent extends Event<null> {
   }
 };
 
-export class LogoutServiceEventRecipient
-extends EventRecepient<null, LogoutServiceEvent> {
-  constructor (subscriber: EventSubscriber<null, LogoutServiceEvent>) {
-    super(logoutService, subscriber);
-  }
-}
-
 
 /**
  * HttpClient request-response JSON protocols:
@@ -47,8 +39,7 @@ interface LogoutRequest {
 
 interface LogoutResponse {}
 
-export class LogoutService
-extends EventSender<null, LogoutServiceEvent> {
+class LogoutService extends EventSender<null, LogoutServiceEvent> {
   constructor () {
     super();
   }

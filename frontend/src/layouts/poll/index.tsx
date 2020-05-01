@@ -4,16 +4,19 @@ import {Footer} from "../../components/bars/footer";
 import {Question} from "../../components/poll/question";
 import {
   PollStatus,
-  PollServiceEventRecipient,
   PollServiceEvent,
-  pollService,
-  PollDescriptor
+  PollDescriptor,
+  pollService
 } from "../../services/poll";
 import {
   LogoutServiceEvent,
-  LogoutServiceEventRecipient
+  logoutService
 } from "../../services/logout";
-import {gotPollEventGuid, logoutEventGuid} from "../../static/Constants";
+import {
+  gotPollEventGuid,
+  gotPollFailedEventGuid,
+  logoutEventGuid
+} from "../../static/Constants";
 
 import "./styles.scss";
 
@@ -35,44 +38,76 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
       poll: undefined
     };
 
-    new PollServiceEventRecipient(this);
-    new LogoutServiceEventRecipient(this);
+    pollService.subscribe(this);
+    logoutService.subscribe(this, 0);
   }
 
   readonly gotEvent = (
     event: PollServiceEvent | LogoutServiceEvent
   ): void => {
     /// Poll service:
-    if (event instanceof PollServiceEvent)
+    if (event instanceof PollServiceEvent) {
       if (event.eventGuid === gotPollEventGuid)
         this.setState({
           gotPoll: true,
           poll: event.data
         });
 
+      else if (event.eventGuid === gotPollFailedEventGuid)
+        this.setState({
+          gotPoll: true,
+          poll: undefined
+        })
+    }
+
     /// Logout service:
-    if (event instanceof LogoutServiceEvent) {
+    else if (event instanceof LogoutServiceEvent)
       if (event.eventGuid === logoutEventGuid) {
         // TODO: Don't forget to send data before logout.
       }
+
+    else {
+      /// TODO: unknown event error ?
     }
   }
 
-  componentDidMount () {
+  private getQuestion (): JSX.Element {
+    if (this.state.poll === undefined)
+      return <></>; // TODO: Error while getting poll here.
+    
+    if (this.state.poll.status === PollStatus.Before)
+      return <></>; /// TODO: before poll
+
+    else if (this.state.poll.status === PollStatus.After)
+      return <></>; /// TODO: after poll
+
+    else if (this.state.poll.status === PollStatus.Open)
+      return <Question {...this.state.poll.currentQuestion}/>;
+
+    else
+      return <></>;
+  }
+
+  componentDidMount (): void {
     pollService.getPoll();
   }
 
+  componentWillUnmount (): void {
+    pollService.unsubscribe(this);
+    logoutService.unsubscribe(this);
+  }
+
   render (): JSX.Element {
-    const questionBlock: JSX.Element =
+    const question: JSX.Element =
       this.state.gotPoll ?
-      <Question/> :
+      this.getQuestion() :
       <></>; // #TODO: loading screen here.
 
     return (
       <div className = {"pollLayoutWrapper"}>
         <Header/>
         <main>
-          {questionBlock}
+          {question}
         </main>
         <Footer/>
       </div>

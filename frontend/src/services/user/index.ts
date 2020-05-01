@@ -2,8 +2,6 @@ import {Guid, getRandomGuid} from "../../utils/Guid";
 import {gotUserEventGuid} from "../../static/Constants";
 import {
   Event,
-  EventSubscriber,
-  EventRecepient,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
 import {
@@ -51,13 +49,6 @@ export class UserServiceEvent extends Event<User> {
   }
 };
 
-export class UserServiceEventRecipient
-extends EventRecepient<User, UserServiceEvent> {
-  constructor (subscriber: EventSubscriber<User, UserServiceEvent>) {
-    super(userService, subscriber);
-  }
-}
-
 
 /**
  * HttpClient request-response JSON protocols:
@@ -80,7 +71,7 @@ interface UserResponseHaveNotGotUser {
 
 type UserResponse = UserResponseHaveGotUser | UserResponseHaveNotGotUser;
 
-export class UserService extends EventSender<User, UserServiceEvent> {
+class UserService extends EventSender<User, UserServiceEvent> {
   constructor () {
     super();
   }

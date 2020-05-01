@@ -13,3 +13,6 @@ export const logoutEventGuid: Guid =
 
 export const gotPollEventGuid: Guid =
   new Guid("e4a5ae7d-534c-402e-8474-1ad50e0bc71f");
+
+export const gotPollFailedEventGuid: Guid =
+  new Guid("24965f5e-d499-44f6-a040-2119bcc411b3");
