@@ -59,6 +59,12 @@
     background: rgb(30, 48, 55);
     
     > .pollQuestionSolutionBlock {
+      padding: 8px 20px;
+
+      .pollQuestionSolutionBlockCheckbox {
+        margin: 10px 0;
+      }
+
       > textarea {
         font-size: 18px;
         color: #eee;
@@ -69,10 +75,7 @@
         border: none;
         outline: none;
         background: rgb(90, 144, 165);
-        padding: 8px 20px;
       }
-
-      
     }
   }
 }

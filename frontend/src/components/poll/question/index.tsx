@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/darcula';
-import {PollQuestion} from "../../../services/poll";
+import {PollQuestion, PollSolution} from "../../../services/poll";
 import {localization} from "../../../static/Localization";
 import {Checkbox} from "../../../components/userInterface/checkbox";
 
@@ -10,20 +10,29 @@ import "./styles.scss";
 
 
 export class Question extends React.Component<PollQuestion> {
-  declare private readonly inputType: "checkbox" | "radio" | "text";
+  declare private readonly pollSolution: PollSolution
 
   constructor (props: PollQuestion) {
     super(props);
 
     switch (this.props.solution.type) {
       case "selectMultiple":
-        this.inputType = "checkbox";
+        this.pollSolution = {
+          type: "checkbox",
+          data: this.props.solution.labels.map((_: string): boolean => false)
+        }
         break;
       case "selectOne":
-        this.inputType = "radio";
+        this.pollSolution = {
+          type: "radio",
+          data: null
+        }
         break;
       case "textField":
-        this.inputType = "text";
+        this.pollSolution = {
+          type: "textfield",
+          data: ""
+        }
         break;
     }
   }
@@ -68,14 +77,20 @@ export class Question extends React.Component<PollQuestion> {
               (
                 (): JSX.Element[] => {
                   return this.props.solution.labels.map(
-                    (label: string): JSX.Element => {
+                    (label: string, index: number): JSX.Element => {
                       return (
                         <div
                           className ={"pollQuestionSolutionBlockCheckbox"}
                         >
                           <Checkbox
                             label = {label}
-                            checked = {true}
+                            checked = {false}
+                            handler = {
+                              (checked: boolean): void => {
+                                (this.pollSolution.data as boolean[])[index] =
+                                  checked;
+                              }
+                            }
                           />
                         </div>
                       );
@@ -91,11 +106,20 @@ export class Question extends React.Component<PollQuestion> {
       case "textField":
         return (
           <div className = "pollQuestionSolutionBlock">
-            <textarea></textarea>
+            <textarea onChange = {
+              (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+                this.pollSolution.data = event.target.value;
+              }
+            }>
+            </textarea>
           </div>
         );
     }
   }
+
+  // componentDidMount (): void {
+  //   setTimeout(() => alert(JSON.stringify(this.pollSolution)), 10000);
+  // }
 
   render (): JSX.Element {
     return (

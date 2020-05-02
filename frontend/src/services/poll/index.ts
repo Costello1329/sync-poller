@@ -37,6 +37,24 @@ export interface PollQuestion {
   }
 }
 
+export type PollSolution =
+  PollSolutionCheckbox | PollSolutionRadio | PollSolutionTextfield;
+
+export interface PollSolutionCheckbox {
+  type: "checkbox";
+  data: boolean[];
+}
+
+export interface PollSolutionRadio {
+  type: "radio";
+  data: number | null;
+}
+
+export interface PollSolutionTextfield {
+  type: "textfield";
+  data: string;
+}
+
 
 /**
  * Service subscription model implementation:
