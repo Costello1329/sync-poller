@@ -1,0 +1,62 @@
+@import "../../../static/colorScheme.scss";
+@import "../../../utils/clearfix.scss";
+
+
+.commonRadio {
+  > label {
+    color: white;
+    display: block;
+    position: relative;
+    padding-left: 32px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    
+    > input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    > span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      border-radius: 100%;
+      background-color: $whiteExtraDark;
+
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 6px;
+        top: 6px;
+        border-radius: 100%;
+        width: 8px;
+        height: 8px;
+        width: 8px;
+        background-color: $whiteExtraDark;
+      }
+    }
+
+    &:hover > input ~ span {
+      background-color: $whiteExtraDark;
+    }
+
+    > input:checked ~ span {
+      background-color: $redLight;
+    }
+
+    > input:checked ~ span:after {
+      display: block;
+    }
+  }
+}
+

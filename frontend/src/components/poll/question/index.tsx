@@ -4,6 +4,8 @@ import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/darcula';
 import {PollQuestion, PollSolution} from "../../../services/poll";
 import {localization} from "../../../static/Localization";
 import {Checkbox} from "../../../components/userInterface/checkbox";
+import {Radio} from "../../../components/userInterface/radio";
+import {Guid, getRandomGuid} from "../../../utils/Guid";
 
 import "./styles.scss";
 
@@ -102,7 +104,41 @@ export class Question extends React.Component<PollQuestion> {
           </div>
         );
       case "selectOne":
-        return <></>;
+        return (
+          <div className = "pollQuestionSolutionBlock">
+            {
+              (
+                (): JSX.Element[] => {
+                  const groupName: Guid = getRandomGuid();
+                  const radioNames: Guid[] =
+                    this.props.solution.labels.map((): Guid => getRandomGuid());
+
+                  return this.props.solution.labels.map(
+                    (label: string, index: number): JSX.Element => {
+                      return (
+                        <div
+                          className ={"pollQuestionSolutionBlockRadio"}
+                        >
+                          <Radio
+                            label = {label}
+                            checked = {index === 0}
+                            radioName = {radioNames[index].guid}
+                            groupName = {groupName.guid}
+                            handler = {
+                              (): void => {
+                                this.pollSolution.data = index;
+                              }
+                            }
+                          />
+                        </div>
+                      );
+                    }
+                  );
+                }
+              )()
+            }
+          </div>
+        );
       case "textField":
         return (
           <div className = "pollQuestionSolutionBlock">
@@ -117,9 +153,9 @@ export class Question extends React.Component<PollQuestion> {
     }
   }
 
-  // componentDidMount (): void {
-  //   setTimeout(() => alert(JSON.stringify(this.pollSolution)), 10000);
-  // }
+  componentDidMount (): void {
+    /// setTimeout(() => alert(JSON.stringify(this.pollSolution)), 1000);
+  }
 
   render (): JSX.Element {
     return (

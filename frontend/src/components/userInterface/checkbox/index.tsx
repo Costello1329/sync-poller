@@ -5,12 +5,12 @@ import "./styles.scss";
 
 
 
-type CheckboxHandler = () => void;
+type CheckboxHandler = (_: boolean) => void;
 
 export interface CheckboxProps {
   label: string;
   checked: boolean;
-  handler?: (checked: boolean) => void;
+  handler?: CheckboxHandler
 }
 
 interface CheckboxState {

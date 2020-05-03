@@ -61,7 +61,11 @@
     > .pollQuestionSolutionBlock {
       padding: 8px 20px;
 
-      .pollQuestionSolutionBlockCheckbox {
+      > .pollQuestionSolutionBlockCheckbox {
+        margin: 10px 0;
+      }
+
+      > .pollQuestionSolutionBlockRadio {
         margin: 10px 0;
       }
 
