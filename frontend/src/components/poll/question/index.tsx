@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/darcula';
 import {PollQuestion, PollSolution} from "../../../services/poll";
@@ -11,39 +11,54 @@ import "./styles.scss";
 
 
 
-export class Question extends React.Component<PollQuestion> {
-  declare private readonly pollSolution: PollSolution
+export interface QuestionProps {
+  pollQuestion: PollQuestion,
+  setAnswers: (_: PollSolution) => void
+}
 
-  constructor (props: PollQuestion) {
+interface QuestionState {
+  pollSolution: PollSolution
+}
+
+export class Question extends React.Component<QuestionProps, QuestionState> {
+  constructor (props: QuestionProps) {
     super(props);
 
-    switch (this.props.solution.type) {
+    switch (this.props.pollQuestion.solution.type) {
       case "selectMultiple":
-        this.pollSolution = {
-          type: "checkbox",
-          data: this.props.solution.labels.map((_: string): boolean => false)
+        this.state = {
+          pollSolution: {
+            type: "checkbox",
+            data: this.props.pollQuestion.solution.labels.map((): boolean => false)
+          }
         }
         break;
       case "selectOne":
-        this.pollSolution = {
-          type: "radio",
-          data: null
+        this.state = {
+          pollSolution: {
+            type: "radio",
+            data: null
+          }
         }
         break;
       case "textField":
-        this.pollSolution = {
-          type: "textfield",
-          data: ""
+        this.state = {
+          pollSolution: {
+            type: "textfield",
+            data: ""
+          }
         }
         break;
     }
+
+    this.props.setAnswers(this.state.pollSolution);
   }
 
   private getProblem (): JSX.Element {
     return (
       <div className = "pollQuestionProblem">
         {
-          this.props.problem.map(
+          this.props.pollQuestion.problem.map(
             (block: PollQuestion["problem"][0]): JSX.Element => {
               if (block.type === "text")
                 return (
@@ -71,14 +86,14 @@ export class Question extends React.Component<PollQuestion> {
   }
 
   private getSolution (): JSX.Element {
-    switch (this.props.solution.type) {
+    switch (this.props.pollQuestion.solution.type) {
       case "selectMultiple":
         return (
           <div className = "pollQuestionSolutionBlock">
             {
               (
                 (): JSX.Element[] => {
-                  return this.props.solution.labels.map(
+                  return this.props.pollQuestion.solution.labels.map(
                     (label: string, index: number): JSX.Element => {
                       return (
                         <div
@@ -89,8 +104,16 @@ export class Question extends React.Component<PollQuestion> {
                             checked = {false}
                             handler = {
                               (checked: boolean): void => {
-                                (this.pollSolution.data as boolean[])[index] =
-                                  checked;
+                                const solutionData: boolean[] =
+                                  this.state.pollSolution.data as boolean[];
+                                solutionData[index] = checked;
+
+                                this.setState({
+                                  pollSolution: {
+                                    type: "checkbox",
+                                    data: solutionData
+                                  }
+                                });
                               }
                             }
                           />
@@ -111,9 +134,11 @@ export class Question extends React.Component<PollQuestion> {
                 (): JSX.Element[] => {
                   const groupName: Guid = getRandomGuid();
                   const radioNames: Guid[] =
-                    this.props.solution.labels.map((): Guid => getRandomGuid());
+                    this.props.pollQuestion.solution.labels.map(
+                      (): Guid => getRandomGuid()
+                    );
 
-                  return this.props.solution.labels.map(
+                  return this.props.pollQuestion.solution.labels.map(
                     (label: string, index: number): JSX.Element => {
                       return (
                         <div
@@ -126,7 +151,12 @@ export class Question extends React.Component<PollQuestion> {
                             groupName = {groupName.guid}
                             handler = {
                               (): void => {
-                                this.pollSolution.data = index;
+                                this.setState({
+                                  pollSolution: {
+                                    type: "radio",
+                                    data: index
+                                  }
+                                });
                               }
                             }
                           />
@@ -144,7 +174,12 @@ export class Question extends React.Component<PollQuestion> {
           <div className = "pollQuestionSolutionBlock">
             <textarea onChange = {
               (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-                this.pollSolution.data = event.target.value;
+                this.setState({
+                  pollSolution: {
+                    type: "textfield",
+                    data: event.target.value
+                  }
+                });
               }
             }>
             </textarea>
@@ -153,15 +188,24 @@ export class Question extends React.Component<PollQuestion> {
     }
   }
 
-  componentDidMount (): void {
-    /// setTimeout(() => alert(JSON.stringify(this.pollSolution)), 1000);
+  shouldComponentUpdate (
+    nextProps: QuestionProps,
+    nextState: QuestionState
+  ): boolean {
+    if (this.props !== nextProps)
+      return true;
+
+    else {
+      this.props.setAnswers(nextState.pollSolution);
+      return false;
+    }
   }
 
   render (): JSX.Element {
     return (
       <div className = "pollQuestion">
         <div className = "pollQuestionProblemHeader">
-          <h1>{this.props.title}</h1>
+          <h1>{this.props.pollQuestion.title}</h1>
         </div>
         {this.getProblem()}
         <div className = "pollQuestionSolutionHeader">

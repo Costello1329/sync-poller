@@ -6,7 +6,8 @@ import {
   PollStatus,
   PollServiceEvent,
   PollDescriptor,
-  pollService
+  pollService,
+  PollSolution
 } from "../../services/poll";
 import {
   LogoutServiceEvent,
@@ -30,8 +31,12 @@ interface PollLayoutState {
 }
 
 export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState> {
+  declare answers: undefined | PollSolution;
+
   constructor (props: PollLayoutProps) {
     super(props);
+
+    this.answers = undefined;
 
     this.state = {
       gotPoll: false,
@@ -61,14 +66,25 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
     }
 
     /// Logout service:
-    else if (event instanceof LogoutServiceEvent)
+    else if (event instanceof LogoutServiceEvent) {
       if (event.eventGuid === logoutEventGuid) {
-        // TODO: Don't forget to send data before logout.
+        this.trySendAnswers();
       }
+    }
 
     else {
       /// TODO: unknown event error ?
     }
+  }
+
+  private setAnswers = (solution: PollSolution): void => {
+    this.answers = solution;
+  }
+
+  private trySendAnswers (): void {
+    if (this.answers !== undefined)
+      alert(JSON.stringify(this.answers));
+    //  answerSerivice.sendAnswer(this.answers);
   }
 
   private getQuestion (): JSX.Element {
@@ -82,7 +98,12 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
       return <></>; /// TODO: after poll
 
     else if (this.state.poll.status === PollStatus.Open)
-      return <Question {...this.state.poll.currentQuestion}/>;
+      return (
+        <Question
+          pollQuestion = {this.state.poll.currentQuestion}
+          setAnswers = {this.setAnswers}
+        />
+      );
 
     else
       return <></>;
@@ -90,6 +111,8 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
 
   componentDidMount (): void {
     pollService.getPoll();
+
+    // setTimeout((): void => this.trySendAnswers(), 5000);
   }
 
   componentWillUnmount (): void {
