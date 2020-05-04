@@ -22,6 +22,7 @@ export enum PollStatus {
 }
 
 export interface PollQuestion {
+  startTime: number; /// time in ticks, when question should close.
   endTime: number; /// time in ticks, when question should close.
   title: string;
   guid: string; /// Guid string

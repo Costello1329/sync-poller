@@ -1,0 +1,8 @@
+@import "../../../static/colorScheme.scss";
+
+
+.zipLine {
+  background-color: $redLight;
+  height: 2px;
+  transition: width 1s linear;
+}

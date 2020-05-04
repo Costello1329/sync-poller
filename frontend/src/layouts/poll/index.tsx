@@ -1,8 +1,9 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Header} from "../../components/bars/header";
 import {Footer} from "../../components/bars/footer";
 import {Question} from "../../components/poll/question";
 import {Message} from "../../components/poll/message";
+import {ZipLine} from "../../components/poll/zipLine";
 import {
   PollStatus,
   PollServiceEvent,
@@ -148,14 +149,23 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
         
         return <Message {...this.state.poll}/>;
       case PollStatus.Open:
-        if (this.state.poll.question.endTime < (new Date()).getTime())
+        if (
+          this.state.poll.question.startTime > (new Date()).getTime() ||
+          this.state.poll.question.endTime < (new Date()).getTime()
+        )
           return <></>; // TODO: poll time error here.
 
         return (
-          <Question
-            pollQuestion = {this.state.poll.question}
-            setAnswers = {this.setAnswers}
-          />
+          <Fragment>
+            <ZipLine
+              startTime = {new Date(this.state.poll.question.startTime)}
+              endTime = {new Date(this.state.poll.question.endTime)}
+            />
+            <Question
+              pollQuestion = {this.state.poll.question}
+              setAnswers = {this.setAnswers}
+            />
+          </Fragment>
         );
       case PollStatus.After:
         return <Message {...this.state.poll}/>;
@@ -163,6 +173,7 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
   }
 
   render (): JSX.Element {
+    console.log("HUI");
     const question: JSX.Element =
       this.state.gotPoll ?
       this.getQuestion() :
