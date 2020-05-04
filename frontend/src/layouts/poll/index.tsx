@@ -2,6 +2,7 @@ import React from "react";
 import {Header} from "../../components/bars/header";
 import {Footer} from "../../components/bars/footer";
 import {Question} from "../../components/poll/question";
+import {Message} from "../../components/poll/message";
 import {
   PollStatus,
   PollServiceEvent,
@@ -77,7 +78,7 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
                 break;
             }
 
-            if (diff !== undefined && diff >= 0)
+            if (diff !== undefined && diff >= 0 && diff <= 0x7FFFFFFF)
               setTimeout((): void => this.getNextQuestion(), diff);
           }
         );
@@ -139,23 +140,26 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
   private getQuestion (): JSX.Element {
     if (this.state.poll === undefined)
       return <></>; // TODO: Error while getting poll here.
-    
-    if (this.state.poll.status === PollStatus.Before)
-      return <></>; /// TODO: before poll
 
-    else if (this.state.poll.status === PollStatus.After)
-      return <></>; /// TODO: after poll
+    switch (this.state.poll.status) {
+      case PollStatus.Before:
+        if (this.state.poll.startTime < (new Date()).getTime())
+          return <></>; // TODO: poll time error here.
+        
+        return <Message {...this.state.poll}/>;
+      case PollStatus.Open:
+        if (this.state.poll.question.endTime < (new Date()).getTime())
+          return <></>; // TODO: poll time error here.
 
-    else if (this.state.poll.status === PollStatus.Open)
-      return (
-        <Question
-          pollQuestion = {this.state.poll.question}
-          setAnswers = {this.setAnswers}
-        />
-      );
-
-    else
-      return <></>;
+        return (
+          <Question
+            pollQuestion = {this.state.poll.question}
+            setAnswers = {this.setAnswers}
+          />
+        );
+      case PollStatus.After:
+        return <Message {...this.state.poll}/>;
+    }
   }
 
   render (): JSX.Element {

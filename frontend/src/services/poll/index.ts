@@ -93,6 +93,7 @@ interface PollResponseAfter {
 }
 
 type PollResponse = PollResponseBefore | PollResponseOpen | PollResponseAfter;
+export type PollClosed = PollResponseBefore | PollResponseAfter;
 
 interface AnswerRequest {
   session: string, /// Guid string
