@@ -18,6 +18,7 @@ import {
   gotPollFailedEventGuid,
   logoutEventGuid
 } from "../../static/Constants";
+import {Guid} from "../../utils/Guid";
 
 import "./styles.scss";
 
@@ -27,7 +28,7 @@ export interface PollLayoutProps {}
 
 interface PollLayoutState {
   gotPoll: boolean;
-  poll: undefined | PollDescriptor;
+  poll: PollDescriptor;
 }
 
 export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState> {
@@ -52,11 +53,35 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
   ): void => {
     /// Poll service:
     if (event instanceof PollServiceEvent) {
-      if (event.eventGuid === gotPollEventGuid)
-        this.setState({
-          gotPoll: true,
-          poll: event.data
-        });
+      if (event.eventGuid === gotPollEventGuid) {
+        this.setState(
+          {
+            gotPoll: true,
+            poll: event.data as NonNullable<PollDescriptor>
+          },
+          (): void => {
+            if (this.state.poll === undefined)
+              return;
+
+            let diff: number | undefined;
+
+            switch (this.state.poll.status) {
+              case PollStatus.Before:
+                diff = this.state.poll.startTime - (new Date()).getTime();
+                break;
+              case PollStatus.Open:
+                diff = this.state.poll.question.endTime - (new Date()).getTime();
+                break;
+              case PollStatus.After:
+                diff = undefined;
+                break;
+            }
+
+            if (diff !== undefined && diff >= 0)
+              setTimeout((): void => this.getNextQuestion(), diff);
+          }
+        );
+      }
 
       else if (event.eventGuid === gotPollFailedEventGuid)
         this.setState({
@@ -77,14 +102,38 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
     }
   }
 
+  private getNextQuestion (): void {
+    this.trySendAnswers();
+
+    this.setState(
+      {
+        gotPoll: false,
+        poll: undefined
+      },
+      (): void => pollService.getPoll()
+    );
+  }
+
   private setAnswers = (solution: PollSolution): void => {
     this.answers = solution;
   }
 
   private trySendAnswers (): void {
-    if (this.answers !== undefined)
-      alert(JSON.stringify(this.answers));
-    //  answerSerivice.sendAnswer(this.answers);
+    if (
+      this.answers !== undefined &&
+      this.state.poll !== undefined &&
+      this.state.poll.status === PollStatus.Open
+    )
+      pollService.sendAnswer(new Guid(this.state.poll.question.guid), this.answers);
+  }
+
+  componentDidMount (): void {
+    pollService.getPoll();
+  }
+
+  componentWillUnmount (): void {
+    pollService.unsubscribe(this);
+    logoutService.unsubscribe(this);
   }
 
   private getQuestion (): JSX.Element {
@@ -100,24 +149,13 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
     else if (this.state.poll.status === PollStatus.Open)
       return (
         <Question
-          pollQuestion = {this.state.poll.currentQuestion}
+          pollQuestion = {this.state.poll.question}
           setAnswers = {this.setAnswers}
         />
       );
 
     else
       return <></>;
-  }
-
-  componentDidMount (): void {
-    pollService.getPoll();
-
-    // setTimeout((): void => this.trySendAnswers(), 5000);
-  }
-
-  componentWillUnmount (): void {
-    pollService.unsubscribe(this);
-    logoutService.unsubscribe(this);
   }
 
   render (): JSX.Element {

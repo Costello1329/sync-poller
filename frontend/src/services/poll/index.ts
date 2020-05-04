@@ -85,7 +85,7 @@ interface PollResponseBefore {
 
 interface PollResponseOpen {
   status: PollStatus.Open,
-  currentQuestion: PollQuestion
+  question: PollQuestion
 }
 
 interface PollResponseAfter {
@@ -94,9 +94,77 @@ interface PollResponseAfter {
 
 type PollResponse = PollResponseBefore | PollResponseOpen | PollResponseAfter;
 
+interface AnswerRequest {
+  session: string, /// Guid string
+  poll: string, /// Guid string
+  answer: {
+    guid: string /// Guid string,
+    data: PollSolution
+  }
+}
+
+interface AnswerResponse {}
+
 export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
   constructor () {
     super();
+  }
+
+  sendAnswer (answerGuid: Guid, answerData: PollSolution): void {
+    const connection: HttpConnection<AnswerRequest, AnswerResponse> =
+      new HttpConnection<AnswerRequest, AnswerResponse>(preferences.apiUrl);
+
+    connection.setRequestValidator(
+      new JsonSchemaValidator<AnswerRequest>(
+        require("./answerSchema/requestSchema.json")
+      )
+    );
+
+    connection.setResponseValidator(
+      new JsonSchemaValidator<AnswerResponse>(
+        require("./answerSchema/responseSchema.json")
+      )
+    );
+
+    const session: Guid | null = storageService.getSession();
+    const poll: Guid | null = storageService.getPoll();
+
+    if (session === null || poll === null)
+      return;
+
+    const request: HttpQuery<AnswerRequest> =  {
+      headers: {},
+      data: {
+        session: session.guid,
+        poll: session.guid,
+        answer: {
+          guid: answerGuid.guid,
+          data: answerData
+        }
+      }
+    };
+
+    connection
+      .send(preferences.apiEndpoints.answer, HttpMethod.post, request)
+      .then(
+        (response: HttpQuery<AnswerResponse>): void => {
+          /**
+           * In the future, here we can receive the message, which
+           * will contain answer check data. We could create a special
+           * event and send it to the PollLayout. When this event will
+           * be received by PollLayout, it will render the result of
+           * the check. This approach will require creating new service.
+           */
+          /// TODO: Show that answer was received by the server.
+        },
+        (error: Error): void => {
+          /// TODO: Show error here
+        }
+      ).catch(
+        (error: Error): void => {
+          /// TODO: Show error here
+        }
+      );
   }
 
   getPoll (): void {
@@ -104,11 +172,15 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       new HttpConnection<PollRequest, PollResponse>(preferences.apiUrl);
 
     connection.setRequestValidator(
-      new JsonSchemaValidator<PollRequest>(require("./requestSchema.json"))
+      new JsonSchemaValidator<PollRequest>(
+        require("./pollSchema/requestSchema.json")
+      )
     );
 
     connection.setResponseValidator(
-      new JsonSchemaValidator<PollResponse>(require("./responseSchema.json"))
+      new JsonSchemaValidator<PollResponse>(
+        require("./pollSchema/responseSchema.json")
+      )
     );
 
     const session: Guid | null = storageService.getSession();

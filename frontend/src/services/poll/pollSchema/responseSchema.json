@@ -25,9 +25,9 @@
       "type": "object",
       "properties": {
         "status": { "const": "open" },
-        "currentQuestion": { "$ref": "#/definitions/pollQuestion" }
+        "question": { "$ref": "#/definitions/pollQuestion" }
       },
-      "required": ["status", "currentQuestion"],
+      "required": ["status", "question"],
       "additionalProperties": false
     },
 
