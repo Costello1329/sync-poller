@@ -4,7 +4,7 @@
 
 .commonCheckbox {
   > label {
-    color: white;
+    color: $white;
     display: block;
     position: relative;
     padding-left: 32px;
@@ -29,7 +29,7 @@
       left: 0;
       height: 20px;
       width: 20px;
-      background-color: $whiteExtraDark;
+      background-color: $gainsboro;
 
       &:after {
         content: "";
@@ -40,16 +40,16 @@
         width: 8px;
         height: 8px;
         width: 8px;
-        background-color: $whiteExtraDark;
+        background-color: $gainsboro;
       }
     }
 
     &:hover > input ~ span {
-      background-color: $whiteExtraDark;
+      background-color: $gainsboro;
     }
 
     > input:checked ~ span {
-      background-color: $redLight;
+      background-color: $valencia;
     }
 
     > input:checked ~ span:after {

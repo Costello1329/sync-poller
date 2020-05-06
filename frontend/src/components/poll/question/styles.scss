@@ -14,7 +14,7 @@
       font-weight: normal;
       text-transform: uppercase;
       font-size: 36px;
-      color: $redSuperLight;
+      color: $burntSienna;
       width: 100%;
       margin: 0 0 8px 32px;
     }
@@ -22,13 +22,13 @@
 
   > .pollQuestionProblem {
     margin-top: 8px;
-    background: rgb(30, 48, 55);
+    background: $midnight;
     box-shadow:0 0 20px 10px rgba(0, 0, 0, 0.1);
     
     > .pollQuestionProblemText {
       font-size: 16px;
       padding: 16px 32px;
-      color: #eee;
+      color: $whiteSmoke;
     }
 
     > .pollQuestionProblemCode {
@@ -49,14 +49,14 @@
       font-weight: normal;
       text-transform: uppercase;
       font-size: 24px;
-      color: $redSuperLight;
+      color: $burntSienna;
       width: 100%;
       margin: 0 0 8px 32px;
     }
   }
 
   > .pollQuestionSolution {
-    background: rgb(30, 48, 55);
+    background: $midnight;
     
     > .pollQuestionSolutionBlock {
       padding: 8px 20px;
@@ -78,7 +78,7 @@
         box-sizing: border-box;
         border: none;
         outline: none;
-        background: rgb(90, 144, 165);
+        background: $airForceBlue;
       }
     }
   }

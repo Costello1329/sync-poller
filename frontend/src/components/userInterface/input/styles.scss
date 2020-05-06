@@ -9,13 +9,13 @@
 
   > .commonInputLabel {
     font-size: 18px;
-    color: rgb(210, 80, 80);
+    color: $valencia;
     text-transform: uppercase;
   }
 
   > .commonInputErrorLabel {
     float: right;
-    color: $redLight;
+    color: $valencia;
     font-size: 14px;
   }
 
@@ -33,11 +33,11 @@
       font-size: 14px;
       outline: none;
       border: none;
-      background-color: rgb(82, 101, 108);
-      color: #eee;
+      background-color: $smaltBlue;
+      color: $whiteSmoke;
 
       &::placeholder {
-       color: #aaa; 
+       color: $darkGray; 
       }
 
       @media screen and (max-width: 700px) {
@@ -45,7 +45,7 @@
       }
 
       &.commonInputHasError {
-        box-shadow: 0 2px 0 0 rgb(210, 80, 80);;
+        box-shadow: 0 2px 0 0 $valencia;
       }
     }
   }

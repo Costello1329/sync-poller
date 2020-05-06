@@ -22,6 +22,9 @@ import {
   logoutEventGuid
 } from "../../static/Constants";
 import {PollLayout} from "../poll";
+import {notificationService} from "../../services/notification";
+import {NotificationType} from "../../components/notifications/notification";
+import {notificationsWrapper} from "../../components/notifications/wrapper";
 
 import "./styles.scss";
 
@@ -45,7 +48,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     userService.subscribe(this);
     authorizationService.subscribe(this);
-    logoutService.subscribe(this, 1);
+    logoutService.subscribe(this);
   }
 
   readonly gotEvent = (
@@ -68,11 +71,7 @@ export class App extends React.Component<AppProps, AppState> {
     /// Logout service:
     else if (event instanceof LogoutServiceEvent) {
       if (event.eventGuid == logoutEventGuid)
-        this.setState({user: new UnauthorizedUser(), gotUser: true});
-    }
-
-    else {
-      /// TODO: unknown event error ?
+        userService.getUser();
     }
   }
 
@@ -86,6 +85,7 @@ export class App extends React.Component<AppProps, AppState> {
     logoutService.unsubscribe(this);
   }
 
+  @notificationsWrapper
   render (): JSX.Element {
     if (!this.state.gotUser) {
       // TODO: loading screen:

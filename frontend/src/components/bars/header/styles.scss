@@ -7,12 +7,11 @@
 
   font-family: "PT Sans";
   width: 100%;
-  background-color: $whiteHalfDark;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   height: 60px;
   position: relative;
-  background-color: rgb(64, 87, 102);
+  background-color: $cello;
 
   > .headerTitle {
     float: left;
@@ -23,7 +22,7 @@
 
     > h1 {
       margin: 0;
-      color: #eee;
+      color: $whiteSmoke;
       text-transform: uppercase;
       text-shadow: 3px 3px rgb(22, 42, 51);
       font-size: 36px;

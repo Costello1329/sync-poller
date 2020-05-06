@@ -2,7 +2,6 @@ import {Guid} from "../../utils/Guid";
 import {logoutEventGuid} from "../../static/Constants";
 import {
   Event,
-  EventSubscriber,
   EventSender
 } from "../../utils/ServiceSubscriptionModel";
 import {
@@ -12,8 +11,9 @@ import {
 } from "../../utils/HttpConnection";
 import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
-import Cookies from 'js-cookie'
-import { storageService } from "../storage";
+import {storageService} from "../storage";
+import {notificationService} from "../notification";
+import * as commonNotifications from "../notification/CommonNotifications";
 
 
 
@@ -63,8 +63,11 @@ class LogoutService extends EventSender<null, LogoutServiceEvent> {
     const session: Guid | null = storageService.getSession();
     const poll: Guid | null = storageService.getPoll();
 
-    if (session === null || poll === null)
+    if (session === null || poll === null) {
+      storageService.deleteSession();
+      this.sendEvent(new LogoutServiceEvent(logoutEventGuid));
       return;
+    }
 
     const request: HttpQuery<LogoutRequest> =  {
       headers: {},
@@ -82,11 +85,11 @@ class LogoutService extends EventSender<null, LogoutServiceEvent> {
           this.sendEvent(new LogoutServiceEvent(logoutEventGuid));
         },
         (error: Error): void => {
-          /// TODO: Show error here
+          throw(error);
         }
       ).catch(
         (error: Error): void => {
-          /// TODO: Show error here
+          notificationService.notify(commonNotifications.logoutError());
         }
       );
   }

@@ -11,7 +11,7 @@
   transform: translate(-50%, -50%);
 
   > h1 {
-    color: $redSuperLight;
+    color: $burntSienna;
     font-weight: normal;
     margin-left: 40px;
     text-transform: uppercase;
@@ -19,13 +19,13 @@
   }
 
   > .pollMessageBody {
-    background-color: rgb(39, 62, 71);
+    background-color: $tarawera;
     box-shadow:0 0 20px 10px rgba(0, 0, 0, 0.1);
     padding: 42px;
     
     > h2 {
       margin: 0;
-      color: $grayLight;
+      color: $veryLightGray;
       font-weight: normal;
       margin-bottom: 36px;
       margin-top: 16px;
@@ -33,7 +33,7 @@
       font-size: 22px;
 
       > span {
-        color: $redSuperLight;
+        color: $burntSienna;
       }
     }
 

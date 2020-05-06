@@ -1,4 +1,5 @@
 @import "../../utils/clearfix.scss";
+@import "../../static/colorScheme.scss";
 
 
 html {
@@ -12,7 +13,7 @@ html {
 
   > main {
     flex: 1 0 auto;
-    background-color: rgb(22, 42, 51);
+    background-color: $blueWhale;
 
     > .pollQuestion {
       margin-top: 80px;

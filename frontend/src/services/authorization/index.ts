@@ -13,6 +13,8 @@ import {
 import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
 import {storageService} from "../storage";
+import {notificationService} from "../notification";
+import * as commonNotifications from "../notification/CommonNotifications";
 
 
 
@@ -91,6 +93,9 @@ class AuthorizationService extends EventSender<boolean, AuthorizationServiceEven
           if (response.data.authorized === true)
             storageService.setSession(new Guid(response.data.session));
 
+          else
+            notificationService.notify(commonNotifications.authorizationError());
+          
           this.sendEvent(
             new AuthorizationServiceEvent(
               response.data.authorized,
@@ -99,13 +104,7 @@ class AuthorizationService extends EventSender<boolean, AuthorizationServiceEven
           );
         },
         (error: Error): void => {
-          this.sendEvent(
-            new AuthorizationServiceEvent(
-              false,
-              authorizedEventGuid
-            )
-          );
-          /// TODO: Show error here
+          throw(error);
         }
       ).catch(
         (error: Error): void => {
@@ -115,7 +114,6 @@ class AuthorizationService extends EventSender<boolean, AuthorizationServiceEven
               authorizedEventGuid
             )
           );
-          /// TODO: Show error here
         }
       );
   }

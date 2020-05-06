@@ -11,8 +11,8 @@
   box-sizing: border-box;
   height: 42px;
   position: relative;
-  background-color: rgb(64, 87, 102);
-  color: #eee;
+  background-color: $cello;
+  color: $whiteSmoke;
 
   > div {
     display: table;

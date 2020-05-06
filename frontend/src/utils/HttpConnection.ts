@@ -1,5 +1,9 @@
 import axios, {AxiosRequestConfig, AxiosResponse} from "axios";
 import {JsonSchemaValidator} from "./JsonSchemaValidator";
+import {notificationService} from "../services/notification";
+import {NotificationType} from "../components/notifications/notification";
+import * as commonNotifications
+from "../services/notification/CommonNotifications";
 
 
 
@@ -47,7 +51,9 @@ export class HttpConnection<RequestData, ResponseData> {
         reject: () => void
       ) => {
         if (!this.requestValidator.validate(request.data)) {
-          /// TODO: Request contract validation error.
+          notificationService.notify(
+            commonNotifications.contractValidationError()
+          );
           reject();
           return;
         }
@@ -70,7 +76,9 @@ export class HttpConnection<RequestData, ResponseData> {
                 !contentType.includes("application/json") ||
                 !this.responseValidator.validate(response.data)
               ) {
-                /// TODO: Response contract validation error.
+                notificationService.notify(
+                  commonNotifications.contractValidationError()
+                );
                 reject();
                 return;
               }
@@ -83,14 +91,19 @@ export class HttpConnection<RequestData, ResponseData> {
               );
             },
             (error: Error): void => {
-              // TODO: error here.
-              alert(error.message);
-              reject();
+              throw(error);
             }
           ).catch(
             (error: Error): void => {
-              // TODO: error here.
-              alert(error.message);
+              notificationService.notify({
+                title: error.message,
+                message:
+                  error.stack === undefined ?
+                  error.message :
+                  error.stack,
+                type: NotificationType.Error
+              });
+              reject();
             }
           );
       }

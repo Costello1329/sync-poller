@@ -10,22 +10,26 @@ export interface ZipLineProps {
 }
 
 export const ZipLine = (props: ZipLineProps): JSX.Element => {
+  const kFrameDuration: number = 1000;
+
   const [fill, setFill]: [number, Dispatch<SetStateAction<number>>] =
     useState(
       ((new Date).getTime() - props.startTime.getTime()) /
-      (props.endTime.getTime() - props.startTime.getTime() - 1000)
+      (props.endTime.getTime() - props.startTime.getTime() - kFrameDuration)
     );
 
   if (fill < 1) {
     const nextDate: Date = new Date();
-    nextDate.setTime(nextDate.getTime() + 1000);
+    nextDate.setTime(nextDate.getTime() + kFrameDuration);
     nextDate.setMilliseconds(0);
     const nextFill: number =
       (nextDate.getTime() - props.startTime.getTime()) /
-      (props.endTime.getTime() - props.startTime.getTime() - 1000);
+      (props.endTime.getTime() - props.startTime.getTime() - kFrameDuration);
 
     setTimeout(
-      (): void => setFill(nextFill),
+      (): void => {
+        setFill(nextFill)
+      },
       nextDate.getTime() - (new Date()).getTime()
     );
   }

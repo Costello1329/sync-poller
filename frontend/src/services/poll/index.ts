@@ -12,6 +12,9 @@ import {
 import * as preferences from "../../static/Preferences";
 import {JsonSchemaValidator} from "../../utils/JsonSchemaValidator";
 import {storageService} from "../storage";
+import {notificationService} from "../notification";
+import * as commonNotifications from "../notification/CommonNotifications";
+import { logoutService } from "../logout";
 
 
 
@@ -157,14 +160,14 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
            * be received by PollLayout, it will render the result of
            * the check. This approach will require creating new service.
            */
-          /// TODO: Show that answer was received by the server.
+          notificationService.notify(commonNotifications.answerSuccess());
         },
         (error: Error): void => {
-          /// TODO: Show error here
+          throw(error)
         }
       ).catch(
         (error: Error): void => {
-          /// TODO: Show error here
+
         }
       );
   }
@@ -207,12 +210,10 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
           this.sendEvent(new PollServiceEvent(poll, gotPollEventGuid));
         },
         (error: Error): void => {
-          /// TODO: Show error here
-          this.sendEvent(new PollServiceEvent(undefined, gotPollFailedEventGuid));
+          throw(error);
         }
       ).catch(
         (error: Error): void => {
-          /// TODO: Show error here
           this.sendEvent(new PollServiceEvent(undefined, gotPollFailedEventGuid));
         }
       );

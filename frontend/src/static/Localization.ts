@@ -21,6 +21,34 @@ class Localization {
   readonly s = (): string => "s";
   readonly marksWillBeRevealedSoon =
     (): string => "Your marks will be revealed soon";
+  readonly contractValidationErrorTitle =
+    (): string => "Contract error";
+  readonly contractValidationErrorMessage =
+    (): string => "Respose or request hasn't passed the JSON schema validation.";
+  readonly authorizationErrorTitle =
+    (): string => "Authorization error";
+  readonly authorizationErrorMessage =
+    (): string => "You haven't been authorized. Check your token.";
+  readonly logoutErrorTitle =
+    (): string => "Logout error";
+  readonly logoutErrorMessage =
+    (): string => "You haven't been logged out.";
+  readonly answerSuccessTitle =
+    (): string => "Answer saved";
+  readonly answerSuccessMessage =
+    (): string => "Your answer was received by the server.";
+  readonly sessionErrorTitle =
+    (): string => "Session error";
+  readonly sessionNotFoundErrorMessage =
+    (): string => "Session cookie was not found.";
+  readonly sessionStoringErrorMessage =
+    (): string => "Session cookie was not found.";
+  readonly pollErrorTitle =
+    (): string => "Poll error";
+  readonly pollNotFoundErrorMessage =
+    (): string => "Poll guid hasn't found. Check the poll link URL.";
+  readonly pollStoringErrorMessage =
+    (): string => "Poll guid isn't valid. Check the poll link URL.";
 }
 
 export const localization: Localization = new Localization();

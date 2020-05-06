@@ -88,11 +88,14 @@ class UserService extends EventSender<User, UserServiceEvent> {
       new JsonSchemaValidator<UserResponse>(require("./responseSchema.json"))
     );
 
-    const session: Guid | null = storageService.getSession();
     const poll: Guid | null = storageService.getPoll();
+    let session: Guid | null;
 
-    if (session === null || poll === null) {
-      /// TODO: send message about bad cookie:
+    if (
+      !storageService.sessionExists() ||
+      poll === null ||
+      (session = storageService.getSession()) === null
+    ) {
       this.sendEvent(new UserServiceEvent(
         new UnauthorizedUser(),
         gotUserEventGuid
@@ -126,13 +129,7 @@ class UserService extends EventSender<User, UserServiceEvent> {
           this.sendEvent(new UserServiceEvent(user, gotUserEventGuid));
         },
         (error: Error): void => {
-          this.sendEvent(
-            new UserServiceEvent(
-              new UnauthorizedUser(),
-              gotUserEventGuid
-            )
-          );
-          /// TODO: Show error here
+          throw(error);
         }
       ).catch(
         (error: Error): void => {
@@ -142,7 +139,6 @@ class UserService extends EventSender<User, UserServiceEvent> {
               gotUserEventGuid
             )
           );
-          /// TODO: Show error here
         }
       );
   }

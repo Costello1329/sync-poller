@@ -1,22 +1,28 @@
 import {Guid} from "../../utils/Guid";
 import Cookies from "js-cookie";
 import * as Preferences from "../../static/Preferences";
+import {notificationService} from "../notification";
+import * as commonNotifications from "../notification/CommonNotifications";
 
 
 
 class StorageService {
+  sessionExists (): boolean {
+    return Cookies.get(Preferences.sessionCookie.key) !== undefined;
+  }
+
   getSession (): Guid | null {
-    const session: string | undefined  = Cookies.get(Preferences.sessionCookie.key);
+    const session: string | undefined = Cookies.get(Preferences.sessionCookie.key);
 
     if (session === undefined) {
-      /// TODO: show session storing key error.
+      notificationService.notify(commonNotifications.sessionNotFoundError());
       return null;
     }
 
     try {
       return new Guid(session);
-    } catch (e) {
-      /// TODO: show session storing value error.
+    } catch (error) {
+      notificationService.notify(commonNotifications.sessionStoringError());
       Cookies.remove(Preferences.sessionCookie.key);
       return null;
     }
@@ -33,11 +39,7 @@ class StorageService {
   }
 
   deleteSession (): void {
-    if (Cookies.get(Preferences.sessionCookie.key) === undefined) {
-      /// TODO: show session storing key error.
-    }
-
-    else
+    if (Cookies.get(Preferences.sessionCookie.key) !== undefined)
       Cookies.remove(Preferences.sessionCookie.key);
   }
 
@@ -47,14 +49,14 @@ class StorageService {
       .get(Preferences.pollParameter.key);
 
     if (poll === null) {
-      /// TODO: show poll storing key error.
+      notificationService.notify(commonNotifications.pollNotFoundError());
       return null;
     }
 
     try {
       return new Guid(poll);
-    } catch (e) {
-      /// TODO: show poll storing value error.
+    } catch (error) {
+      notificationService.notify(commonNotifications.pollStoringError());
       return null;
     }
   }

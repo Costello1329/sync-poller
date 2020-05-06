@@ -1,18 +1,21 @@
-$white: #fff;
-$whiteHalfDark: #f7f7f7;
-$whiteDark: #eee;
-$whiteExtraDark: #ddd;
-$grayLight: #ccc;
-$gray: #aaa;
-$grayDark: #888;
-$blackLight: #333;
+/// Named according to: https://www.color-blindness.com/color-name-hue/
 
-$orange: #fca23b;
-$orangeDark: #eb912a;
-$redLight: rgb(210, 80, 80);
-$redSuperLight: rgb(240, 100, 100);
-$red: rgb(150, 51, 48);
-$green: #2ab466;
-$blueLight: #5eaacf;
 
-$redishWhite: #ffeeee;
+$black:           rgb(0, 0, 0);
+$blueWhale:       rgb(22, 42, 51);
+$midnight:        rgb(30, 48, 55);
+$tarawera:        rgb(39, 62, 71);
+$cello:           rgb(64, 87, 102);
+$rusticRed:       rgb(70, 30, 30);
+$smaltBlue:       rgb(82, 101, 108);
+$airForceBlue:    rgb(90, 144, 165);
+$gray:            rgb(119, 119, 119);
+$darkGray:        rgb(170, 170, 170);
+$chestnut:        rgb(183, 74, 74);
+$fuzzyWuzzyBrown: rgb(200, 80, 80);
+$veryLightGray:   rgb(204, 204, 204);
+$valencia:        rgb(210, 80, 80);
+$gainsboro:       rgb(221, 221, 221);
+$whiteSmoke:      rgb(238, 238, 238);
+$burntSienna:     rgb(240, 100, 100);
+$white:           rgb(255, 255, 255);

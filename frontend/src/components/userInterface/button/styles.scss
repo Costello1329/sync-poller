@@ -47,27 +47,27 @@
   }
 
   &.commonButtonRed {
-    background-color: rgb(183, 74, 74);
-    box-shadow: 0 2px 0 0 rgb(70, 30, 30);
+    background-color: $chestnut;
+    box-shadow: 0 2px 0 0 $rusticRed;
 
     &:hover {
-      background-color: rgb(200, 80, 80);
+      background-color: $fuzzyWuzzyBrown;
     }
   }
 
   &.commonButtonGray {
-    background-color: #eee;
-    box-shadow: 0 2px 0 0 #777;
+    background-color: $whiteSmoke;
+    box-shadow: 0 2px 0 0 $gray;
 
     &:hover {
-      background-color: 0 2px 0 0 rgb(200, 80, 80);
+      background-color: 0 2px 0 0 $fuzzyWuzzyBrown;
     }
   }
 
   &.commonButtonTransparent {
     background-color: transparent;
-    box-shadow: 0 2px 0 0 rgb(200, 80, 80);
-    color: #ddd;
+    box-shadow: 0 2px 0 0 $fuzzyWuzzyBrown;
+    color: $gainsboro;
 
     &.commonButtonSmall {
       width: 80px;

@@ -16,3 +16,6 @@ export const gotPollEventGuid: Guid =
 
 export const gotPollFailedEventGuid: Guid =
   new Guid("24965f5e-d499-44f6-a040-2119bcc411b3");
+
+export const notificationsShowEventGuid: Guid =
+  new Guid("cb6162c9-bfd8-4b0f-a7f3-8d9543db810a");

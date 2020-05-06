@@ -47,12 +47,9 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
     };
 
     pollService.subscribe(this);
-    logoutService.subscribe(this, 0);
   }
 
-  readonly gotEvent = (
-    event: PollServiceEvent | LogoutServiceEvent
-  ): void => {
+  readonly gotEvent = (event: PollServiceEvent): void => {
     /// Poll service:
     if (event instanceof PollServiceEvent) {
       if (event.eventGuid === gotPollEventGuid) {
@@ -91,17 +88,6 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
           poll: undefined
         })
     }
-
-    /// Logout service:
-    else if (event instanceof LogoutServiceEvent) {
-      if (event.eventGuid === logoutEventGuid) {
-        this.trySendAnswers();
-      }
-    }
-
-    else {
-      /// TODO: unknown event error ?
-    }
   }
 
   private getNextQuestion (): void {
@@ -135,7 +121,6 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
 
   componentWillUnmount (): void {
     pollService.unsubscribe(this);
-    logoutService.unsubscribe(this);
   }
 
   private getQuestion (): JSX.Element {
@@ -173,11 +158,10 @@ export class PollLayout extends React.Component<PollLayoutProps, PollLayoutState
   }
 
   render (): JSX.Element {
-    console.log("HUI");
     const question: JSX.Element =
       this.state.gotPoll ?
       this.getQuestion() :
-      <></>; // #TODO: loading screen here.
+      <></>; // TODO: loading screen here.
 
     return (
       <div className = {"pollLayoutWrapper"}>

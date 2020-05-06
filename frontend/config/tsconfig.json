@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "es2015", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -14,7 +14,9 @@
     "isolatedModules": true,
     "noEmit": false,
     "sourceMap": true,
-    "jsx": "react"
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "downlevelIteration": true
   },
   "rules": {
     "typedef": [

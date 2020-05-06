@@ -53,7 +53,7 @@
                   "type": "integer",
                   "minminimum": 0
                 },
-                { "const": "null" }
+                { "const": null }
               ]
             }
           },

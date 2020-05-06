@@ -8,7 +8,7 @@
   > h1 {
     font-weight: normal;
     font-size:36px;
-    color: $redSuperLight;
+    color: $burntSienna;
     width: 100%;
     margin: 0 0 20px 0;
     text-transform: uppercase;
@@ -18,7 +18,7 @@
 .commonForm {
   @include clearfix;
   width: 640px;
-  background-color: rgb(39, 62, 71);
+  background-color: $tarawera;
   display: block;
   box-shadow: 0 0 32px  rgba(0, 0, 0, 0.025);
   padding: 40px 0;

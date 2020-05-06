@@ -16,3 +16,8 @@ export const sessionCookie = {
 export const pollParameter = {
   key: "poll"
 }
+
+export const notificationsParameters = {
+  kMaxNotificationTitleLength: 25,
+  kMaxNotificationMessageLength: 50
+}
