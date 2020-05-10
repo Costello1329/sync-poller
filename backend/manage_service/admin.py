@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from manage_service.models import UserGuid, Poll, AnswersOption, Question, PollProblemBlock
+from manage_service.models import UserGuid, Poll, AnswersOption, Question, PollProblemBlock, PeopleAnswer
 
 admin.site.register(UserGuid)
 admin.site.register(Poll)

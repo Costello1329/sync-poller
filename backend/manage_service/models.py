@@ -1,6 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from main_function.sessions_storage import logout_user
+from django.contrib import admin
 
 
 # Create your models here.
@@ -26,16 +27,23 @@ def delete_tokens_session(sender, instance, using, **kwargs):
 
 
 class PeopleAnswer(models.Model):
-    guid = models.CharField(primary_key=True, max_length=36)
     token = models.ForeignKey('manage_service.UserGuid', related_name="people_answer_to_tokens", db_index=True,
                               on_delete=models.CASCADE)
     question = models.ForeignKey('manage_service.Question', related_name="people_answer_to_questions", db_index=True,
                                  on_delete=models.CASCADE)
-    correct = models.BooleanField(null=True)
     data = models.TextField(null=True)
 
 
+@admin.register(PeopleAnswer)
+class PeopleAnswerAdmin(admin.ModelAdmin):
+    list_display = ("token", "question", "data")
+    list_filter = ("token", "question")
+
+
 class Question(models.Model):
+    def __str__(self):
+        return self.title
+
     guid = models.CharField(primary_key=True, max_length=36)
     index = models.IntegerField(db_index=True)
     title = models.CharField(max_length=62)
