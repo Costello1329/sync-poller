@@ -34,7 +34,8 @@ class UserView(APIView):
         poll_db = Poll.objects.filter(guid=poll)[0]
         current_question = Question.objects.filter(poll=poll_db, index=poll_db.current_question)[0]
         now = unix_time_millis(datetime.datetime.utcnow())
-        question_start_time = unix_time_millis(datetime.datetime.utcfromtimestamp(current_question.date_start.timestamp()))
+        question_start_time = unix_time_millis(
+            datetime.datetime.utcfromtimestamp(current_question.date_start.timestamp()))
         question_end_time = unix_time_millis(datetime.datetime.utcfromtimestamp(current_question.date_end.timestamp()))
         if question_start_time > now:
             body = {
@@ -55,11 +56,11 @@ class UserView(APIView):
                     "type": poll_problem_block.type,
                     "text": poll_problem_block.text
                 })
-            if current_question.type is ["selectOne", "selectMultiple"]:
+            if current_question.type == "selectOne" or current_question.type == "selectMultiple":
                 answer_option_list = []
                 answers = AnswersOption.objects.filter(question=current_question)
                 for answer in answers:
-                    answer_option_list.append(answer.text)
+                    answer_option_list.append(answer.label)
                 solution = {
                     "type": current_question.type,
                     "labels": answer_option_list
@@ -71,7 +72,7 @@ class UserView(APIView):
             body = {
                 "status": "open",
                 "question": {
-                    "startTine": now - question_start_time,
+                    "startTime": question_start_time - now,
                     "endTime": question_end_time - now,
                     "title": current_question.title,
                     "guid": current_question.guid,
@@ -81,6 +82,6 @@ class UserView(APIView):
             }
             return response_processing.validate_response(body, res_schema)
         else:
-            poll.current_question = current_question.index + 1
-            poll.save()
-            self.post(request)
+            poll_db.current_question = current_question.index + 1
+            poll_db.save()
+            return self.post(request)

@@ -2,8 +2,8 @@ res_schema = {
     "type": "object",
 
     "oneOf": [
-        {"$ref": "#/definitions/pollResponseBefore"},
         {"$ref": "#/definitions/pollResponseOpen"},
+        {"$ref": "#/definitions/pollResponseBefore"},
         {"$ref": "#/definitions/pollResponseAfter"}
     ],
 
