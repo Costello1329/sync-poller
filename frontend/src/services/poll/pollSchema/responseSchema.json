@@ -60,7 +60,7 @@
       "properties": {
         "startTime": {
           "type": "integer",
-          "minimum": 0
+          "maximum": 0
         },
         "endTime": {
           "type": "integer",
