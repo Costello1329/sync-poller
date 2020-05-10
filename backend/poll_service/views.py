@@ -1,5 +1,5 @@
 import datetime
-
+import pytz
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import itertools
@@ -34,8 +34,8 @@ class UserView(APIView):
         poll_db = Poll.objects.filter(guid=poll)[0]
         current_question = Question.objects.filter(poll=poll_db, index=poll_db.current_question)[0]
         now = unix_time_millis(datetime.datetime.utcnow())
-        question_start_time = unix_time_millis(current_question.date_start)
-        question_end_time = unix_time_millis(current_question.date_start)
+        question_start_time = unix_time_millis(datetime.datetime.utcfromtimestamp(current_question.date_start.timestamp()))
+        question_end_time = unix_time_millis(datetime.datetime.utcfromtimestamp(current_question.date_end.timestamp()))
         if question_start_time > now:
             body = {
                 "status": "before",
