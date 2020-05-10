@@ -141,7 +141,7 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       headers: {},
       data: {
         session: session.guid,
-        poll: session.guid,
+        poll: poll.guid,
         answer: {
           guid: answerGuid.guid,
           data: answerData
@@ -198,7 +198,7 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       headers: {},
       data: {
         session: session.guid,
-        poll: session.guid
+        poll: poll.guid
       }
     };
 
