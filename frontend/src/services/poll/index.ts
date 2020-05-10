@@ -207,6 +207,20 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       .then(
         (response: HttpQuery<PollResponse>): void => {
           const poll: PollDescriptor = response.data;
+          const currentTime: number = (new Date()).getTime();
+          
+          switch (poll.status) {
+            case PollStatus.Before:
+              poll.startTime += currentTime;
+              break;
+            case PollStatus.Open:
+              poll.question.startTime += currentTime;
+              poll.question.endTime += currentTime;
+              break;
+            case PollStatus.After:
+              break;
+          }
+          
           this.sendEvent(new PollServiceEvent(poll, gotPollEventGuid));
         },
         (error: Error): void => {
