@@ -51,7 +51,7 @@
               "oneOf": [
                 {
                   "type": "integer",
-                  "minminimum": 0
+                  "minimum": 0
                 },
                 { "const": null }
               ]
@@ -65,7 +65,7 @@
           "properties": {
             "type": {
               "type": "string",
-              "const": "textfield"
+              "const": "textField"
             },
             "data": { "type": "string" }
           },
