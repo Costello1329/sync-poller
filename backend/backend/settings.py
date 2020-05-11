@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "poll_service",
     'authorization_service',
     'logout_service',
-    'user_service'
+    'user_service',
+    'answer_service',
 ]
 
 CORS_ORIGIN_WHITELIST = [
