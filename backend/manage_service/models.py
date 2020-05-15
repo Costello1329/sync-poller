@@ -9,10 +9,8 @@ from django.contrib import admin
 class Poll(models.Model):
     guid = models.CharField(primary_key=True, max_length=36)
     description = models.CharField(max_length=62)
-    current_question = models.IntegerField(default=0)
     date_start = models.DateTimeField()
     active = models.BooleanField(default=True)
-    count_question = models.IntegerField(default=0)
 
 
 class UserGuid(models.Model):
