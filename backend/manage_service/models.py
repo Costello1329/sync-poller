@@ -11,6 +11,7 @@ class Poll(models.Model):
     description = models.CharField(max_length=62)
     date_start = models.DateTimeField()
     active = models.BooleanField(default=True)
+    first_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
 
 
 class UserGuid(models.Model):
@@ -38,6 +39,14 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
     list_filter = ("token", "question")
 
 
+class NodeQuestions(models.Model):
+    question = models.ForeignKey('manage_service.Question', related_name="people_answer_to_questions", db_index=True,
+                                 on_delete=models.CASCADE)
+    next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
+    prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
+    duration = models.IntegerField()
+
+
 class Question(models.Model):
     def __str__(self):
         return self.title
@@ -47,10 +56,9 @@ class Question(models.Model):
     title = models.CharField(max_length=62)
     type = models.CharField(max_length=62)
     text = models.CharField(max_length=128)
+    first_poll_problem_block = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
     poll = models.ForeignKey('manage_service.Poll', related_name="questions_to_poll", on_delete=models.CASCADE,
                              db_index=True)
-    date_start = models.DateTimeField(db_index=True)
-    date_end = models.DateTimeField(db_index=True)
 
 
 class PollProblemBlock(models.Model):
@@ -59,9 +67,12 @@ class PollProblemBlock(models.Model):
     questions = models.ForeignKey('manage_service.Question', related_name="PollProblemBlock_to_questions",
                                   on_delete=models.CASCADE,
                                   db_index=True)
+    next_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
+    prev_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
 
 
 class AnswersOption(models.Model):
+    guid = models.CharField(primary_key=True, max_length=36)
     question = models.ForeignKey('manage_service.Question', related_name="answer_options_to_questions",
                                  on_delete=models.CASCADE,
                                  db_index=True)
