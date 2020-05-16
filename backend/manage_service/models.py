@@ -40,10 +40,12 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
 
 
 class NodeQuestions(models.Model):
-    question = models.ForeignKey('manage_service.Question', related_name="people_answer_to_questions", db_index=True,
+    question = models.ForeignKey('manage_service.Question', related_name="node_to_questions", db_index=True,
                                  on_delete=models.CASCADE)
-    next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
-    prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
+    next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
+                                     related_name="NodeQuestions_next")
+    prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
+                                     related_name="NodeQuestions_prev")
     duration = models.IntegerField()
 
 
@@ -67,8 +69,10 @@ class PollProblemBlock(models.Model):
     questions = models.ForeignKey('manage_service.Question', related_name="PollProblemBlock_to_questions",
                                   on_delete=models.CASCADE,
                                   db_index=True)
-    next_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
-    prev_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
+    next_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
+                                     related_name="PollProblem_next")
+    prev_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
+                                     related_name="PollProblem_prev")
 
 
 class AnswersOption(models.Model):
