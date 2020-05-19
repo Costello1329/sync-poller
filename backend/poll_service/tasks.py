@@ -36,7 +36,7 @@ def update_poll_context(poll_guid, task_guid):
         poll = Poll.objects.filter(guid=poll_guid)[0]
         node = poll.first_node
         node_storage.change_node(node.guid, poll_guid)
-        time_storage.change_timestamp(node.question.startTime.timestamp(), poll_guid)
+        time_storage.change_timestamp(datetime.datetime.utcnow().timestamp(), poll_guid)
         update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration)
     else:
         node = NodeQuestions.objects.filter(guid=node_guid)[0].next_node
