@@ -28,13 +28,12 @@ req_schema = {
                     "type": "object",
                     "properties": {
                         "type": {
-                            "type": "string",
                             "const": "checkbox"
                         },
                         "data": {
-                            "type": "array",
-                            "items": [{"type": "boolean"}],
-                            "additionalItems": {"type": "boolean"}
+                            "type": "object",
+                            "propertyNames": {"$ref": "#/definitions/Guid"},
+                            "additionalProperties": {"type": "boolean"}
                         }
                     },
                     "required": ["type", "data"],
@@ -44,17 +43,10 @@ req_schema = {
                     "type": "object",
                     "properties": {
                         "type": {
-                            "type": "string",
                             "const": "radio"
                         },
                         "data": {
-                            "oneOf": [
-                                {
-                                    "type": "integer",
-                                    "minimum": 0
-                                },
-                                {"const": None}
-                            ]
+                            "$ref": "#/definitions/Guid"
                         }
                     },
                     "required": ["type", "data"],

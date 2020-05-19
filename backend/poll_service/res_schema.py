@@ -2,8 +2,8 @@ res_schema = {
     "type": "object",
 
     "oneOf": [
-        {"$ref": "#/definitions/pollResponseOpen"},
         {"$ref": "#/definitions/pollResponseBefore"},
+        {"$ref": "#/definitions/pollResponseOpen"},
         {"$ref": "#/definitions/pollResponseAfter"}
     ],
 
@@ -87,11 +87,9 @@ res_schema = {
                                     ]
                                 },
                                 "labels": {
-                                    "type": "array",
-                                    "items": [
-                                        {"type": "string"}
-                                    ],
-                                    "additionalItems": {"type": "string"}
+                                    "type": "object",
+                                    "propertyNames": {"$ref": "#/definitions/Guid"},
+                                    "additionalProperties": {"type": "string"}
                                 }
                             },
                             "required": ["type", "labels"],
