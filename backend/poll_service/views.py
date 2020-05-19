@@ -6,10 +6,11 @@ import itertools
 
 # Create your views here.
 from main_function import response_processing
+from main_function.celary_controle_storage import QuestionNodeStorage, QuestionStartTimeStorage
 from main_function.request_validation import validate_request
 from main_function.response_processing import get_reject_response, get_unauthorized_response, get_success_response
 from main_function.sessions_storage import get_user
-from manage_service.models import UserGuid, Poll, Question, PollProblemBlock, AnswersOption
+from manage_service.models import UserGuid, Poll, Question, PollProblemBlock, AnswersOption, NodeQuestions
 from poll_service.req_schema import req_schema
 from poll_service.res_schema import res_schema
 
@@ -24,38 +25,41 @@ class UserView(APIView):
     @validate_request(req_schema)
     def post(self, request):
         session = request.data["session"]
-        poll = request.data["poll"]
+        poll_guid = request.data["poll"]
         user_guid = get_user(session)
         if user_guid is None:
             get_unauthorized_response()
         user = UserGuid.objects.filter(guid=user_guid)
-        if not user or user[0].poll.guid != poll:
+        if not user or user[0].poll.guid != poll_guid:
             get_reject_response()
-        poll_db = Poll.objects.filter(guid=poll)[0]
-        current_question = Question.objects.filter(poll=poll_db, index=poll_db.current_question)[0]
+        node_storage = QuestionNodeStorage()
+        node_guid = node_storage.get_node(poll_guid)
+        node = NodeQuestions.objects.filter(guid=node_guid)
+        current_question = node.question
+        poll = Poll.objects.filter(guid=poll_guid)
         now = unix_time_millis(datetime.datetime.utcnow())
-        question_start_time = unix_time_millis(
-            datetime.datetime.utcfromtimestamp(current_question.date_start.timestamp()))
-        question_end_time = unix_time_millis(datetime.datetime.utcfromtimestamp(current_question.date_end.timestamp()))
-        if question_start_time > now:
+        poll_start_time = unix_time_millis(
+            datetime.datetime.utcfromtimestamp(poll.date_start.timestamp()))
+        if node_guid == "":
             body = {
                 "status": "before",
-                "startTime": question_start_time - now
+                "startTime": poll_start_time - now
             }
             return response_processing.validate_response(body, res_schema)
-        elif question_end_time < now and poll_db.count_question == current_question.index + 1:
+        elif node.next_node == node:
             body = {
                 "status": "after"
             }
             return response_processing.validate_response(body, res_schema)
-        elif question_start_time <= now < question_end_time:
-            poll_problem_blocks = PollProblemBlock.objects.filter(questions=current_question)
+        else:
+            poll_problem_block = current_question.first_poll_problem_block
             poll_problem_array = []
-            for poll_problem_block in poll_problem_blocks:
+            while poll_problem_block != poll_problem_block.next_poll:
                 poll_problem_array.append({
                     "type": poll_problem_block.type,
                     "text": poll_problem_block.text
                 })
+                poll_problem_block = poll_problem_block.next_poll
             if current_question.type == "selectOne" or current_question.type == "selectMultiple":
                 answer_option_list = []
                 answers = AnswersOption.objects.filter(question=current_question)
@@ -69,6 +73,9 @@ class UserView(APIView):
                 solution = {
                     "type": current_question.type
                 }
+            question_start_time = unix_time_millis(
+                datetime.datetime.utcfromtimestamp(QuestionStartTimeStorage().get_timestamp(poll_guid)))
+            question_end_time = unix_time_millis(datetime.timedelta( seconds=node.duration) + datetime.datetime.utcfromtimestamp(QuestionStartTimeStorage().get_timestamp(poll_guid)))
             body = {
                 "status": "open",
                 "question": {
@@ -81,7 +88,3 @@ class UserView(APIView):
                 }
             }
             return response_processing.validate_response(body, res_schema)
-        else:
-            poll_db.current_question = current_question.index + 1
-            poll_db.save()
-            return self.post(request)

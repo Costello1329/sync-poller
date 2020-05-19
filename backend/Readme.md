@@ -1,0 +1,1 @@
+https://evileg.com/en/post/3/ - deploy to postgres

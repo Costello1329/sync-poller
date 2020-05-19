@@ -23,4 +23,5 @@ urlpatterns = [
     path('logout/', include("logout_service.urls")),
     path('user/', include("user_service.urls")),
     path('poll/', include("poll_service.urls")),
+    path('answer/', include("answer_service.urls")),
 ]
