@@ -34,8 +34,6 @@ class UserView(APIView):
             get_reject_response()
         node_storage = QuestionNodeStorage()
         node_guid = node_storage.get_node(poll_guid)
-        node = NodeQuestions.objects.filter(guid=node_guid)[0]
-        current_question = node.question
         poll = Poll.objects.filter(guid=poll_guid)
         now = unix_time_millis(datetime.datetime.utcnow())
         poll_start_time = unix_time_millis(
@@ -46,7 +44,11 @@ class UserView(APIView):
                 "startTime": poll_start_time - now
             }
             return response_processing.validate_response(body, res_schema)
-        elif node.next_node == node:
+
+        node = NodeQuestions.objects.filter(guid=node_guid)[0]
+        current_question = node.question
+
+        if node.next_node == node:
             body = {
                 "status": "after"
             }
