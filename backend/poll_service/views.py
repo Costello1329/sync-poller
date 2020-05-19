@@ -34,7 +34,7 @@ class UserView(APIView):
             get_reject_response()
         node_storage = QuestionNodeStorage()
         node_guid = node_storage.get_node(poll_guid)
-        poll = Poll.objects.filter(guid=poll_guid)
+        poll = Poll.objects.filter(guid=poll_guid)[0]
         now = unix_time_millis(datetime.datetime.utcnow())
         poll_start_time = unix_time_millis(
             datetime.datetime.utcfromtimestamp(poll.date_start.timestamp()))
@@ -77,7 +77,9 @@ class UserView(APIView):
                 }
             question_start_time = unix_time_millis(
                 datetime.datetime.utcfromtimestamp(QuestionStartTimeStorage().get_timestamp(poll_guid)))
-            question_end_time = unix_time_millis(datetime.timedelta( seconds=node.duration) + datetime.datetime.utcfromtimestamp(QuestionStartTimeStorage().get_timestamp(poll_guid)))
+            question_end_time = unix_time_millis(
+                datetime.timedelta(seconds=node.duration) + datetime.datetime.utcfromtimestamp(
+                    QuestionStartTimeStorage().get_timestamp(poll_guid)))
             body = {
                 "status": "open",
                 "question": {

@@ -45,12 +45,10 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
 
 class NodeQuestions(models.Model):
     guid = models.CharField(primary_key=True, max_length=36)
-    question = models.ForeignKey('manage_service.Question', related_name="node_to_questions", db_index=True,
-                                 on_delete=models.CASCADE)
     next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
-                                     related_name="NodeQuestions_next", null=True,blank=True)
+                                     related_name="NodeQuestions_next", null=True, blank=True)
     prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
-                                     related_name="NodeQuestions_prev", null=True,blank=True)
+                                     related_name="NodeQuestions_prev", null=True, blank=True)
     duration = models.IntegerField()
 
 
