@@ -28,13 +28,12 @@
           "type": "object",
           "properties": {
             "type": {
-              "type": "string",
-              "const": "checkbox"
+              "const": "checkbox" 
             },
             "data": {
-              "type": "array",
-              "items": [{ "type": "boolean" }],
-              "additionalItems": { "type": "boolean" }
+              "type": "object",
+              "propertyNames": { "$ref": "#/definitions/Guid" },
+              "additionalProperties": { "type": "boolean" }
             }
           },
           "required": ["type", "data"],
@@ -44,17 +43,10 @@
           "type": "object",
           "properties": {
             "type": {
-              "type": "string",
-              "const": "radio"
+              "const": "radio" 
             },
             "data": {
-              "oneOf": [
-                {
-                  "type": "integer",
-                  "minimum": 0
-                },
-                { "const": null }
-              ]
+              "$ref": "#/definitions/Guid"
             }
           },
           "required": ["type", "data"],

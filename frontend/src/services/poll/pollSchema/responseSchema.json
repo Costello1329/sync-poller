@@ -87,11 +87,9 @@
                   ]
                 },
                 "labels": {
-                  "type": "array",
-                  "items": [
-                    { "type": "string" }
-                  ],
-                  "additionalItems": { "type": "string" }
+                  "type": "object",
+                  "propertyNames": { "$ref": "#/definitions/Guid" },
+                  "additionalProperties": { "type": "string" }
                 }
               },
               "required": ["type", "labels"],

@@ -13,7 +13,7 @@ import "./styles.scss";
 
 
 
-export const Message =
+export const Message: React.FunctionComponent<PollClosed> =
   (props: PollClosed): JSX.Element => {
     const [time, setTime]: [number, Dispatch<SetStateAction<number>>] =
       useState(Math.floor((new Date()).getTime() / 1000) * 1000);
