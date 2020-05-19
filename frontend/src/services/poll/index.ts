@@ -35,7 +35,7 @@ export interface PollQuestion {
   }[],
   solution: {
     type: "selectOne" | "selectMultiple",
-    labels: string[]
+    labels: any /// {"guid": "label"}
   } | {
     type: "textField"
   }
@@ -46,12 +46,12 @@ export type PollSolution =
 
 export interface PollSolutionCheckbox {
   type: "checkbox";
-  data: boolean[];
+  data: any;  /// {"guid": boolean}
 }
 
 export interface PollSolutionRadio {
   type: "radio";
-  data: number | null;
+  data: string; /// guid string
 }
 
 export interface PollSolutionTextfield {

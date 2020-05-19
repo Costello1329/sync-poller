@@ -1,7 +1,7 @@
 import React from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/darcula';
-import {PollQuestion, PollSolution} from "../../../services/poll";
+import {PollQuestion, PollSolution, PollSolutionRadio} from "../../../services/poll";
 import {localization} from "../../../static/Localization";
 import {Checkbox} from "../../../components/userInterface/checkbox";
 import {Radio} from "../../../components/userInterface/radio";
@@ -29,7 +29,8 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
         this.state = {
           pollSolution: {
             type: "checkbox",
-            data: this.props.pollQuestion.solution.labels.map((): boolean => false)
+            data: this.props.pollQuestion.solution.labels.keys().map(
+              (): boolean => false)
           }
         }
         break;
@@ -37,7 +38,8 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
         this.state = {
           pollSolution: {
             type: "radio",
-            data: null
+            data: this.props.pollQuestion.solution.labels.keys().map(
+              (): boolean => false)
           }
         }
         break;
@@ -93,19 +95,23 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
             {
               (
                 (): JSX.Element[] => {
-                  return this.props.pollQuestion.solution.labels.map(
-                    (label: string, index: number): JSX.Element => {
+                  return this.props.pollQuestion.solution.labels.keys().map(
+                    (guid: string, index: number): JSX.Element => {
                       return (
                         <div
                           className ={"pollQuestionSolutionBlockCheckbox"}
                         >
                           <Checkbox
-                            label = {label}
+                            label = {
+                              (this.props.pollQuestion.solution as
+                                {type: "selectMultiple", labels: any}
+                              ).labels[guid]
+                            }
                             checked = {false}
                             handler = {
                               (checked: boolean): void => {
-                                const solutionData: boolean[] =
-                                  this.state.pollSolution.data as boolean[];
+                                const solutionData: any =
+                                  this.state.pollSolution.data as any;
                                 solutionData[index] = checked;
 
                                 this.setState({
@@ -138,14 +144,18 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
                       (): Guid => getRandomGuid()
                     );
 
-                  return this.props.pollQuestion.solution.labels.map(
-                    (label: string, index: number): JSX.Element => {
+                  return this.props.pollQuestion.solution.labels.keys().map(
+                    (guid: string, index: number): JSX.Element => {
                       return (
                         <div
                           className ={"pollQuestionSolutionBlockRadio"}
                         >
                           <Radio
-                            label = {label}
+                            label = {
+                              (this.props.pollQuestion.solution as
+                                {type: "selectOne", labels: any}
+                              ).labels[guid]
+                            }
                             checked = {index === 0}
                             radioName = {radioNames[index].guid}
                             groupName = {groupName.guid}
@@ -154,7 +164,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
                                 this.setState({
                                   pollSolution: {
                                     type: "radio",
-                                    data: index
+                                    data: guid
                                   }
                                 });
                               }
