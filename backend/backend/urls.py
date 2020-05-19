@@ -24,4 +24,5 @@ urlpatterns = [
     path('user/', include("user_service.urls")),
     path('poll/', include("poll_service.urls")),
     path('answer/', include("answer_service.urls")),
+    path('start/', include("answer_service.urls")),
 ]

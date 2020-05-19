@@ -34,7 +34,7 @@ class UserView(APIView):
             get_reject_response()
         node_storage = QuestionNodeStorage()
         node_guid = node_storage.get_node(poll_guid)
-        node = NodeQuestions.objects.filter(guid=node_guid)
+        node = NodeQuestions.objects.filter(guid=node_guid)[0]
         current_question = node.question
         poll = Poll.objects.filter(guid=poll_guid)
         now = unix_time_millis(datetime.datetime.utcnow())

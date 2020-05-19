@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'logout_service',
     'user_service',
     'answer_service',
+    'start_poll_service'
 ]
 
 CELERY_BROKER_URL = 'redis://localhost:6379/15'

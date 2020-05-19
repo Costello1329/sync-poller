@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 
-from poll_service.tasks import create_poll_context
 from main_function.sessions_storage import logout_user
 from django.contrib import admin
 
@@ -14,16 +13,6 @@ class Poll(models.Model):
     date_start = models.DateTimeField()
     active = models.BooleanField(default=True)
     first_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
-
-
-@receiver(models.signals.post_save, sender=Poll, dispatch_uid='Poll_edit')
-def poll_edit(sender, instance, using, **kwargs):
-    create_poll_context(instance.guid)
-
-
-@receiver(models.signals.post_init, sender=Poll, dispatch_uid='Poll_init')
-def poll_init(sender, instance, using, **kwargs):
-    create_poll_context(instance.guid)
 
 
 class UserGuid(models.Model):
@@ -59,9 +48,9 @@ class NodeQuestions(models.Model):
     question = models.ForeignKey('manage_service.Question', related_name="node_to_questions", db_index=True,
                                  on_delete=models.CASCADE)
     next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
-                                     related_name="NodeQuestions_next")
+                                     related_name="NodeQuestions_next", null=True,blank=True)
     prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
-                                     related_name="NodeQuestions_prev")
+                                     related_name="NodeQuestions_prev", null=True,blank=True)
     duration = models.IntegerField()
 
 
@@ -70,11 +59,10 @@ class Question(models.Model):
         return self.title
 
     guid = models.CharField(primary_key=True, max_length=36)
-    index = models.IntegerField(db_index=True)
     title = models.CharField(max_length=62)
     type = models.CharField(max_length=62)
-    text = models.CharField(max_length=128)
-    first_poll_problem_block = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
+    first_poll_problem_block = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
+                                                    null=True, blank=True)
 
 
 class PollProblemBlock(models.Model):
@@ -82,11 +70,11 @@ class PollProblemBlock(models.Model):
     text = models.TextField()
     questions = models.ForeignKey('manage_service.Question', related_name="PollProblemBlock_to_questions",
                                   on_delete=models.CASCADE,
-                                  db_index=True)
+                                  db_index=True, null=True, blank=True)
     next_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
-                                     related_name="PollProblem_next")
+                                     related_name="PollProblem_next", null=True, blank=True)
     prev_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
-                                     related_name="PollProblem_prev")
+                                     related_name="PollProblem_prev", null=True, blank=True)
 
 
 class AnswersOption(models.Model):
