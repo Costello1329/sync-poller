@@ -1,5 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
+
+from main_function.celary_controle_storage import create_poll_context
 from main_function.sessions_storage import logout_user
 from django.contrib import admin
 
@@ -12,6 +14,16 @@ class Poll(models.Model):
     date_start = models.DateTimeField()
     active = models.BooleanField(default=True)
     first_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE)
+
+
+@receiver(models.signals.post_save, sender=Poll, dispatch_uid='Poll_edit')
+def poll_edit(sender, instance, using, **kwargs):
+    create_poll_context(instance.guid)
+
+
+@receiver(models.signals.post_init, sender=Poll, dispatch_uid='Poll_init')
+def poll_init(sender, instance, using, **kwargs):
+    create_poll_context(instance.guid)
 
 
 class UserGuid(models.Model):
@@ -32,6 +44,9 @@ class PeopleAnswer(models.Model):
                                  on_delete=models.CASCADE)
     data = models.TextField(null=True)
 
+    answer = models.ForeignKey('manage_service.AnswersOption', related_name="people_answer_to_answer", null=True,
+                               on_delete=models.CASCADE)
+
 
 @admin.register(PeopleAnswer)
 class PeopleAnswerAdmin(admin.ModelAdmin):
@@ -40,6 +55,7 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
 
 
 class NodeQuestions(models.Model):
+    guid = models.CharField(primary_key=True, max_length=36)
     question = models.ForeignKey('manage_service.Question', related_name="node_to_questions", db_index=True,
                                  on_delete=models.CASCADE)
     next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
