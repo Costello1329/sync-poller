@@ -45,6 +45,9 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
 
 class NodeQuestions(models.Model):
     guid = models.CharField(primary_key=True, max_length=36)
+    questions = models.ForeignKey('manage_service.Question', related_name="_to_questions",
+                                  on_delete=models.CASCADE,
+                                  db_index=True, null=True, blank=True)
     next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
                                      related_name="NodeQuestions_next", null=True, blank=True)
     prev_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
@@ -66,9 +69,6 @@ class Question(models.Model):
 class PollProblemBlock(models.Model):
     type = models.CharField(max_length=36)
     text = models.TextField()
-    questions = models.ForeignKey('manage_service.Question', related_name="PollProblemBlock_to_questions",
-                                  on_delete=models.CASCADE,
-                                  db_index=True, null=True, blank=True)
     next_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
                                      related_name="PollProblem_next", null=True, blank=True)
     prev_poll = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE,
