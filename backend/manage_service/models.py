@@ -45,7 +45,7 @@ class PeopleAnswerAdmin(admin.ModelAdmin):
 
 class NodeQuestions(models.Model):
     guid = models.CharField(primary_key=True, max_length=36)
-    questions = models.ForeignKey('manage_service.Question', related_name="_to_questions",
+    question = models.ForeignKey('manage_service.Question', related_name="_to_questions",
                                   on_delete=models.CASCADE,
                                   db_index=True, null=True, blank=True)
     next_node = models.OneToOneField('manage_service.NodeQuestions', on_delete=models.CASCADE,
