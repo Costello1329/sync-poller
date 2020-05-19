@@ -1,4 +1,7 @@
 from __future__ import absolute_import, unicode_literals
+
+import uuid
+
 from celery import shared_task
 
 from main_function.celary_controle_storage import TaskStorage, QuestionNodeStorage, QuestionStartTimeStorage
@@ -39,3 +42,13 @@ def update_poll_context(poll_guid, task_guid):
         node = NodeQuestions.objects.filter(guid=node_guid)[0].next_node
         node_storage.change_node(node.guid, poll_guid)
         update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration)
+
+
+def create_poll_context(poll_guid):
+    task_storage = TaskStorage()
+    task_guid = str(uuid.uuid4())
+    task_storage.start_task(task_guid, poll_guid)
+    node_storage = QuestionNodeStorage()
+    node_storage.change_node("", poll_guid)
+    poll = Poll.objects.filter(guid=poll_guid)[0]
+    update_poll_context.apply_async((poll_guid, task_guid), etc=poll.date_start)

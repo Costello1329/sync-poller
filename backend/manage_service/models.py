@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 
-from main_function.celary_controle_storage import create_poll_context
+from poll_service.tasks import create_poll_context
 from main_function.sessions_storage import logout_user
 from django.contrib import admin
 
@@ -75,8 +75,6 @@ class Question(models.Model):
     type = models.CharField(max_length=62)
     text = models.CharField(max_length=128)
     first_poll_problem_block = models.OneToOneField('manage_service.PollProblemBlock', on_delete=models.CASCADE)
-    poll = models.ForeignKey('manage_service.Poll', related_name="questions_to_poll", on_delete=models.CASCADE,
-                             db_index=True)
 
 
 class PollProblemBlock(models.Model):

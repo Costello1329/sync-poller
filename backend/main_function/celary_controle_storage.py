@@ -1,9 +1,8 @@
 import uuid
 import redis as redis
 
+
 # storage dict{poll_guid : task_guid}
-from manage_service.models import Poll
-from poll_service.tasks import update_poll_context
 
 
 class TaskStorage:
@@ -60,13 +59,3 @@ class QuestionStartTimeStorage:
         if not self.poll_exist(poll_guid):
             return None
         return self.time_storage.get(str(poll_guid)).decode("utf-8")
-
-
-def create_poll_context(poll_guid):
-    task_storage = TaskStorage()
-    task_guid = str(uuid.uuid4())
-    task_storage.start_task(task_guid, poll_guid)
-    node_storage = QuestionNodeStorage()
-    node_storage.change_node("", poll_guid)
-    poll = Poll.objects.filter(guid=poll_guid)[0]
-    update_poll_context.apply_async((poll_guid, task_guid), etc=poll.date_start)
