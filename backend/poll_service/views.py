@@ -81,7 +81,6 @@ class UserView(APIView):
             question_end_time = unix_time_millis(
                 datetime.timedelta(seconds=node.duration) + datetime.datetime.utcfromtimestamp(
                     float(QuestionStartTimeStorage().get_timestamp(poll_guid))))
-            print("body")
             body = {
                 "status": "open",
                 "question": {
@@ -93,4 +92,5 @@ class UserView(APIView):
                     "solution": solution
                 }
             }
+            print(body)
             return response_processing.validate_response(body, res_schema)
