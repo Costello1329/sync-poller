@@ -7,7 +7,8 @@ from answer_service import res_schema
 from answer_service.req_schema import req_schema
 from main_function import response_processing
 from main_function.request_validation import validate_request
-from main_function.response_processing import get_unauthorized_response, get_reject_response
+from main_function.response_processing \
+    import get_unauthorized_response, get_reject_response, get_empty_success_response
 from main_function.sessions_storage import get_user
 from manage_service.models import UserGuid, Poll, PeopleAnswer, Question
 
@@ -40,6 +41,5 @@ class UserView(APIView):
         if data["type"] == "radio" or data["type"] == "textField":
             data_answer = str(data["data"])
             PeopleAnswer.objects.create(token=user, question=question_db, data=data_answer)
-            body = {}
-            return response_processing.validate_response(body, res_schema)
+            return get_empty_success_response()
         return get_reject_response()
