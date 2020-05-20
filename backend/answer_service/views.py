@@ -27,6 +27,7 @@ class UserView(APIView):
         user = UserGuid.objects.filter(guid=user_guid)
         if not user or user[0].poll.guid != poll:
             get_reject_response()
+        user = user[0]
         if data["type"] == "checkbox":
             data_answer = data["data"]
             data_db = ""
