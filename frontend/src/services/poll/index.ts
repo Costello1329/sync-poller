@@ -55,7 +55,7 @@ export interface PollSolutionRadio {
 }
 
 export interface PollSolutionTextfield {
-  type: "textfield";
+  type: "textField";
   data: string;
 }
 

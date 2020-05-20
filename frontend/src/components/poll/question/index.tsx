@@ -46,7 +46,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
       case "textField":
         this.state = {
           pollSolution: {
-            type: "textfield",
+            type: "textField",
             data: ""
           }
         }
@@ -186,7 +186,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
               (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
                 this.setState({
                   pollSolution: {
-                    type: "textfield",
+                    type: "textField",
                     data: event.target.value
                   }
                 });
