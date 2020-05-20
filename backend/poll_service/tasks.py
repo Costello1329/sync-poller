@@ -34,7 +34,7 @@ def update_poll_context(poll_guid, task_guid):
     node_storage.change_node("test2", "test2")
     node_storage.node_storage.save()
     if not task_storage.check_actual_task(task_guid, poll_guid):
-        return "pidor"
+        return "1"
     node_storage = QuestionNodeStorage()
     node_guid = node_storage.get_node(poll_guid)
     time_storage = QuestionStartTimeStorage()
@@ -48,10 +48,10 @@ def update_poll_context(poll_guid, task_guid):
         node = NodeQuestions.objects.filter(guid=node_guid)[0].next_node
         if node is None:
             node_storage.change_node("end", poll_guid)
-            return "хуесос"
+            return "2"
         node_storage.change_node(node.guid, poll_guid)
         update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration)
-    return "хуй"
+    return "3"
 
 
 def create_poll_context(poll_guid):
