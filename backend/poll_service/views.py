@@ -44,19 +44,17 @@ class UserView(APIView):
                 "startTime": poll_start_time - now
             }
             return response_processing.validate_response(body, res_schema)
-
-        node = NodeQuestions.objects.filter(guid=node_guid)[0]
-        current_question = node.question
-
-        if node.next_node == node:
+        if node_guid == "end":
             body = {
                 "status": "after"
             }
             return response_processing.validate_response(body, res_schema)
-        else:
+        node = NodeQuestions.objects.filter(guid=node_guid)[0]
+        current_question = node.question
+        if True:
             poll_problem_block = current_question.first_poll_problem_block
             poll_problem_array = []
-            while poll_problem_block != poll_problem_block.next_poll:
+            while poll_problem_block != poll_problem_block.next_poll and poll_problem_block is not None:
                 poll_problem_array.append({
                     "type": poll_problem_block.type,
                     "text": poll_problem_block.text
@@ -76,10 +74,10 @@ class UserView(APIView):
                     "type": current_question.type
                 }
             question_start_time = unix_time_millis(
-                datetime.datetime.utcfromtimestamp(QuestionStartTimeStorage().get_timestamp(poll_guid)))
+                datetime.datetime.utcfromtimestamp(float(QuestionStartTimeStorage().get_timestamp(poll_guid))))
             question_end_time = unix_time_millis(
                 datetime.timedelta(seconds=node.duration) + datetime.datetime.utcfromtimestamp(
-                    QuestionStartTimeStorage().get_timestamp(poll_guid)))
+                    float(QuestionStartTimeStorage().get_timestamp(poll_guid))))
             body = {
                 "status": "open",
                 "question": {
