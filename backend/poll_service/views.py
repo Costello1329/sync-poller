@@ -50,6 +50,7 @@ class UserView(APIView):
             body = {
                 "status": "after"
             }
+            print("after")
             return response_processing.validate_response(body, res_schema)
         node = NodeQuestions.objects.filter(guid=node_guid)[0]
         current_question = node.question
@@ -66,7 +67,7 @@ class UserView(APIView):
                 answer_option_dict = {}
                 answers = AnswersOption.objects.filter(question=current_question)
                 for answer in answers:
-                    answer_option_dict.update({answer.guid:answer.label})
+                    answer_option_dict.update({answer.guid: answer.label})
                 solution = {
                     "type": current_question.type,
                     "labels": answer_option_dict
@@ -80,6 +81,7 @@ class UserView(APIView):
             question_end_time = unix_time_millis(
                 datetime.timedelta(seconds=node.duration) + datetime.datetime.utcfromtimestamp(
                     float(QuestionStartTimeStorage().get_timestamp(poll_guid))))
+            print("body")
             body = {
                 "status": "open",
                 "question": {
