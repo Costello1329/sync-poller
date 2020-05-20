@@ -5,6 +5,7 @@
   "main": "./src/index.tsx",
   "scripts": {
     "dev": "webpack-dev-server --config ./config/webpack.dev.config.js --mode development",
+    "dev_vps": "webpack-dev-server --host 0.0.0.0 --config ./config/webpack.dev.config.js --mode development"
     "build": "npm run clean && webpack --config ./config/webpack.build.config.js --mode production",
     "clean": "rm -rf ./build"
   },
