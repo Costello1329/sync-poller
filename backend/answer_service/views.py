@@ -31,10 +31,12 @@ class UserView(APIView):
         user = user[0]
         if data["type"] == "checkbox":
             data_answer = data["data"]
+            if data_answer is None:
+                return get_empty_success_response()
             data_db = ""
             for i in data_answer:
-                data_db += str(i) + '; '
-            data_db = data_db[:-2]
+                if data_answer[i]:
+                    data_db += str(i) + '; '
             PeopleAnswer.objects.create(token=user, question=question_db, data=data_db)
             body = {}
             return get_empty_success_response()
