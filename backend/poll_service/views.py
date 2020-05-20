@@ -44,6 +44,7 @@ class UserView(APIView):
                 "status": "before",
                 "startTime": poll_start_time - now
             }
+            print("before")
             return response_processing.validate_response(body, res_schema)
         if node_guid == "end":
             body = {
