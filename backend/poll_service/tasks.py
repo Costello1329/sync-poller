@@ -29,7 +29,6 @@ def xsum(numbers):
 @shared_task
 def update_poll_context(poll_guid, task_guid):
     task_storage = TaskStorage()
-    pop.objects.create(kol=1)
     node_storage = QuestionNodeStorage()
     node_storage.change_node("test2", "test2")
     node_storage.node_storage.save()
@@ -43,14 +42,15 @@ def update_poll_context(poll_guid, task_guid):
         node = poll.first_node
         node_storage.change_node(node.guid, poll_guid)
         time_storage.change_timestamp(datetime.datetime.utcnow().timestamp(), poll_guid)
-        update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration)
+        update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration-1)
     else:
         node = NodeQuestions.objects.filter(guid=node_guid)[0].next_node
         if node is None:
             node_storage.change_node("end", poll_guid)
             return "2"
         node_storage.change_node(node.guid, poll_guid)
-        update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration)
+        time_storage.change_timestamp(datetime.datetime.utcnow().timestamp(), poll_guid)
+        update_poll_context.apply_async((poll_guid, task_guid), countdown=node.duration-1)
     return "3"
 
 
@@ -62,4 +62,6 @@ def create_poll_context(poll_guid):
     node_storage.change_node("", poll_guid)
     node_storage.node_storage.save()
     poll = Poll.objects.filter(guid=poll_guid)[0]
-    update_poll_context.apply_async((poll_guid, task_guid), etc=poll.date_start)
+    cd = (datetime.datetime.utcfromtimestamp(poll.date_start.timestamp()) - datetime.datetime.utcnow()).total_seconds()
+    print(cd)
+    update_poll_context.apply_async((poll_guid, task_guid), countdown=int(cd)-1)
