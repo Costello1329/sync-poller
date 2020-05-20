@@ -62,4 +62,4 @@ def create_poll_context(poll_guid):
     node_storage.change_node("", poll_guid)
     node_storage.node_storage.save()
     poll = Poll.objects.filter(guid=poll_guid)[0]
-    update_poll_context.apply_async((poll_guid, task_guid), countdown=11)
+    update_poll_context.apply_async((poll_guid, task_guid), etc=poll.date_start)
