@@ -61,13 +61,13 @@ class UserView(APIView):
                 })
                 poll_problem_block = poll_problem_block.next_poll
             if current_question.type == "selectOne" or current_question.type == "selectMultiple":
-                answer_option_list = []
+                answer_option_dict = {}
                 answers = AnswersOption.objects.filter(question=current_question)
                 for answer in answers:
-                    answer_option_list.append(answer.label)
+                    answer_option_dict.update({answer.guid:answer.label})
                 solution = {
                     "type": current_question.type,
-                    "labels": answer_option_list
+                    "labels": answer_option_dict
                 }
             else:
                 solution = {
