@@ -5,7 +5,7 @@ export const apiEndpoints = {
   authorization: "/authorize/",
   logout: "/logout/",
   poll: "/poll/",
-  answer: "/answer"
+  answer: "/answer/"
 }
 
 export const sessionCookie = {
