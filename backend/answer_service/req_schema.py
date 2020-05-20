@@ -1,13 +1,13 @@
 req_schema = {
     "type": "object",
     "properties": {
-        "session": {"$ref": "#/definitions/Guid"},
-        "poll": {"$ref": "#/definitions/Guid"},
+        "session": { "$ref": "#/definitions/Guid" },
+        "poll": { "$ref": "#/definitions/Guid" },
         "answer": {
             "type": "object",
             "properties": {
-                "guid": {"$ref": "#/definitions/Guid"},
-                "data": {"$ref": "#/definitions/PollSolution"}
+                "guid": { "$ref": "#/definitions/Guid" },
+                "data": { "$ref": "#/definitions/PollSolution" }
             },
             "required": ["guid", "data"],
             "additionalProperties": False
@@ -32,8 +32,8 @@ req_schema = {
                         },
                         "data": {
                             "type": "object",
-                            "propertyNames": {"$ref": "#/definitions/Guid"},
-                            "additionalProperties": {"type": "boolean"}
+                            "propertyNames": { "$ref": "#/definitions/Guid" },
+                            "additionalProperties": { "type": "boolean" }
                         }
                     },
                     "required": ["type", "data"],
@@ -46,7 +46,10 @@ req_schema = {
                             "const": "radio"
                         },
                         "data": {
-                            "$ref": "#/definitions/Guid"
+                            "oneOf": [
+                                { "const": None },
+                                { "$ref": "#/definitions/Guid" }
+                            ]
                         }
                     },
                     "required": ["type", "data"],
@@ -59,7 +62,7 @@ req_schema = {
                             "type": "string",
                             "const": "textField"
                         },
-                        "data": {"type": "string"}
+                        "data": { "type": "string" }
                     },
                     "required": ["type", "data"],
                     "additionalProperties": False
