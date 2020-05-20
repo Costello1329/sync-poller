@@ -142,7 +142,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
                 (): JSX.Element[] => {
                   const groupName: Guid = getRandomGuid();
                   const radioNames: Guid[] =
-                    this.props.pollQuestion.solution.labels.map(
+                    Object.keys(this.props.pollQuestion.solution.labels).map(
                       (): Guid => getRandomGuid()
                     );
 

@@ -149,8 +149,6 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
       }
     };
 
-    console.log(request.data);
-
     connection
       .send(preferences.apiEndpoints.answer, HttpMethod.post, request)
       .then(

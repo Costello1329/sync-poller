@@ -79,6 +79,7 @@ export class HttpConnection<RequestData, ResponseData> {
                 notificationService.notify(
                   commonNotifications.contractValidationError()
                 );
+                alert("HUI");
                 reject();
                 return;
               }

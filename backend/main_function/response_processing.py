@@ -21,7 +21,7 @@ def setup_cors_response_headers(res):
 
 
 def get_empty_success_response():
-    return setup_cors_response_headers(Response(status=200))
+    return setup_cors_response_headers(Response({}, status=200))
 
 
 def get_success_response(body):
