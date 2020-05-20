@@ -34,6 +34,7 @@ class UserView(APIView):
             get_reject_response()
         node_storage = QuestionNodeStorage()
         node_guid = node_storage.get_node(poll_guid)
+        print(node_guid)
         poll = Poll.objects.filter(guid=poll_guid)[0]
         now = unix_time_millis(datetime.datetime.utcnow())
         poll_start_time = unix_time_millis(
@@ -43,11 +44,13 @@ class UserView(APIView):
                 "status": "before",
                 "startTime": poll_start_time - now
             }
+            print("before")
             return response_processing.validate_response(body, res_schema)
         if node_guid == "end":
             body = {
                 "status": "after"
             }
+            print("after")
             return response_processing.validate_response(body, res_schema)
         node = NodeQuestions.objects.filter(guid=node_guid)[0]
         current_question = node.question
@@ -64,7 +67,7 @@ class UserView(APIView):
                 answer_option_dict = {}
                 answers = AnswersOption.objects.filter(question=current_question)
                 for answer in answers:
-                    answer_option_dict.update({answer.guid:answer.label})
+                    answer_option_dict.update({answer.guid: answer.label})
                 solution = {
                     "type": current_question.type,
                     "labels": answer_option_dict
@@ -89,4 +92,5 @@ class UserView(APIView):
                     "solution": solution
                 }
             }
+            print(body)
             return response_processing.validate_response(body, res_schema)
