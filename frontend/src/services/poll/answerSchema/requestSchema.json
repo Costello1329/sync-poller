@@ -46,7 +46,10 @@
               "const": "radio" 
             },
             "data": {
-              "$ref": "#/definitions/Guid"
+              "oneOf": [
+                { "const": null },
+                { "$ref": "#/definitions/Guid" }
+              ]
             }
           },
           "required": ["type", "data"],

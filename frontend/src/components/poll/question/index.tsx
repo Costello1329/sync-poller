@@ -29,8 +29,11 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
         this.state = {
           pollSolution: {
             type: "checkbox",
-            data: this.props.pollQuestion.solution.labels.keys().map(
-              (): boolean => false)
+            data: Object.keys(this.props.pollQuestion.solution.labels)
+              .reduce((accumulator: any, currentValue: string): any => {
+                accumulator[currentValue] = false;
+                return accumulator;
+              }, {})
           }
         }
         break;
@@ -38,8 +41,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
         this.state = {
           pollSolution: {
             type: "radio",
-            data: this.props.pollQuestion.solution.labels.keys().map(
-              (): boolean => false)
+            data: null
           }
         }
         break;
@@ -95,7 +97,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
             {
               (
                 (): JSX.Element[] => {
-                  return this.props.pollQuestion.solution.labels.keys().map(
+                  return Object.keys(this.props.pollQuestion.solution.labels).map(
                     (guid: string, index: number): JSX.Element => {
                       return (
                         <div
@@ -112,7 +114,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
                               (checked: boolean): void => {
                                 const solutionData: any =
                                   this.state.pollSolution.data as any;
-                                solutionData[index] = checked;
+                                solutionData[guid] = checked;
 
                                 this.setState({
                                   pollSolution: {
@@ -144,7 +146,7 @@ export class Question extends React.Component<QuestionProps, QuestionState> {
                       (): Guid => getRandomGuid()
                     );
 
-                  return this.props.pollQuestion.solution.labels.keys().map(
+                  return Object.keys(this.props.pollQuestion.solution.labels).map(
                     (guid: string, index: number): JSX.Element => {
                       return (
                         <div

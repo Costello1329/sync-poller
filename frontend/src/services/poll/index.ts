@@ -51,7 +51,7 @@ export interface PollSolutionCheckbox {
 
 export interface PollSolutionRadio {
   type: "radio";
-  data: string; /// guid string
+  data: string | null; /// guid string
 }
 
 export interface PollSolutionTextfield {
@@ -148,6 +148,8 @@ export class PollService extends EventSender<PollDescriptor, PollServiceEvent> {
         }
       }
     };
+
+    console.log(request.data);
 
     connection
       .send(preferences.apiEndpoints.answer, HttpMethod.post, request)
