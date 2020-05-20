@@ -37,7 +37,7 @@ class UserView(APIView):
             data_db = data_db[:-2]
             PeopleAnswer.objects.create(token=user, question=question_db, data=data_db)
             body = {}
-            return response_processing.validate_response(body, res_schema)
+            return get_empty_success_response()
         if data["type"] == "radio" or data["type"] == "textField":
             data_answer = str(data["data"])
             PeopleAnswer.objects.create(token=user, question=question_db, data=data_answer)
