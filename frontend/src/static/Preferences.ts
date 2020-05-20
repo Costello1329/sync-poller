@@ -1,4 +1,4 @@
-export const apiUrl: string = "http://0.0.0.0:8000";
+export const apiUrl: string = "http://209.97.183.71:8000";
 
 export const apiEndpoints = {
   user: "/user/",
