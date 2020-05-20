@@ -54,7 +54,7 @@ class UserView(APIView):
         if True:
             poll_problem_block = current_question.first_poll_problem_block
             poll_problem_array = []
-            while poll_problem_block != poll_problem_block.next_poll and poll_problem_block is not None:
+            while poll_problem_block is not None and poll_problem_block != poll_problem_block.next_poll:
                 poll_problem_array.append({
                     "type": poll_problem_block.type,
                     "text": poll_problem_block.text
